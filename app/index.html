@@ -13,6 +13,13 @@
       #<strong>{{ticket.number}}</strong> ({{ticket.created | mydate: 'd.m.yyyy HH:mm:ss'}})<br />
       author: <strong>{{ticket.Author.name}}</strong> ({{ticket.Author.email}}, {{ticket.author}})
       <p>{{ticket.description}}</p>
+      <span ng:show="!ticket.Comments.items.lenght">No comments</span>
+      <a href ng:click="loadComments(ticket)" ng:show="ticket.Comments.items.lenght">Comments: {{ticket.Comments.items.length}}</a>
+      <ul>
+        <li ng:repeat="comment in ticket.Comments.data">
+          {{comment.created | mydate: 'd.m.yyyy HH:mm:ss'}}: {{comment.text}}
+        </li>
+      </ul>
     </li>
   </ul>
 

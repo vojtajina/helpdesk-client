@@ -44,7 +44,7 @@ angular.service('$api', function($xhr) {
 angular.service('$tickets', function($xhr) {
   var tickets = [];
 
-  return function(url) {
+  var $tickets = function(url) {
     $xhr('GET', url, function(code, response) {
       angular.forEach(response.items, function(url, i) {
         $xhr('GET', url, function(code, ticket) {
@@ -52,10 +52,31 @@ angular.service('$tickets', function($xhr) {
           $xhr('GET', ticket.author, function(code, user) {
             tickets[i].Author = user;
           });
+
+          // comments, extract into separate service ?
+          var comments = ticket.Comments = [];
+          if (ticket.comments) {
+            $xhr('GET', ticket.comments, function(code, response) {
+              ticket.Comments = response;
+            });
+          } else {
+            ticket.Comments = {items: []};
+          }
         });
       });
     });
 
     return tickets;
   };
+
+  $tickets.loadComments = function(ticket) {
+    angular.forEach(ticket.Comments.items, function(url, i) {
+      ticket.Comments.data = [];
+      $xhr('GET', url, function(code, response) {
+        ticket.Comments.data[i] = response;
+      });
+    });
+  };
+
+  return $tickets;
 });

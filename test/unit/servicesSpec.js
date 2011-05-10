@@ -53,7 +53,7 @@ describe('$tickets', function() {
     xhr.expectGET('/t1-url').respond({author: '/auth-url', comments: null});
     xhr.expectGET('/auth-url').respond(author);
 
-    var tickets = $tickets('/tickets/url');
+    var tickets = $tickets.get('/tickets/url');
     xhr.flush();
 
     expect(tickets[0].Author).toBeDefined();
@@ -64,7 +64,7 @@ describe('$tickets', function() {
     xhr.expectGET('/t1-url').respond({author: '/auth-url', comments: null});
     xhr.expectGET('/auth-url').respond({});
 
-    var tickets = $tickets('/tickets/url');
+    var tickets = $tickets.get('/tickets/url');
     xhr.flush();
 
     expect(tickets[0].Comments).toBeDefined();
@@ -77,7 +77,7 @@ describe('$tickets', function() {
     xhr.expectGET('/auth-url').respond({});
     xhr.expectGET('/comments-url').respond({items: ['/c1-url', '/c2-url']});
 
-    var tickets = $tickets('/tickets/url');
+    var tickets = $tickets.get('/tickets/url');
     xhr.flush();
 
     expect(tickets[0].Comments.items.length).toBe(2);
@@ -88,7 +88,7 @@ describe('$tickets', function() {
     xhr.expectGET('/auth-url').respond({});
     xhr.expectGET('/comments-url').respond({items: ['/c1-url', '/c2-url']});
 
-    var tickets = $tickets('/tickets/url');
+    var tickets = $tickets.get('/tickets/url');
     xhr.flush();
 
     var comment1 = {}, comment2 = {};

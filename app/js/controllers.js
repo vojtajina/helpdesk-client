@@ -11,6 +11,6 @@ function TicketListCtrl($api, $tickets) {
   this.loadComments = $tickets.loadComments;
 
   $api('tickets', function(ticketsUrl) {
-    self.tickets = $tickets(ticketsUrl);
+    self.tickets = $tickets.get(ticketsUrl);
   });
 }

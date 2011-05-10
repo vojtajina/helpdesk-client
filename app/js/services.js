@@ -37,46 +37,55 @@ angular.service('$api', function($xhr) {
 
 /**
  * TICKETS service [async]
- * Loads all tickets along with details and user details
- * 
- * @returns {Array<Object>} Empty array, will be filled with tickets when response is back
  */
 angular.service('$tickets', function($xhr) {
   var tickets = [];
 
-  var $tickets = function(url) {
-    $xhr('GET', url, function(code, response) {
-      angular.forEach(response.items, function(url, i) {
-        $xhr('GET', url, function(code, ticket) {
-          tickets[i] = ticket;
-          $xhr('GET', ticket.author, function(code, user) {
-            tickets[i].Author = user;
-          });
+  return {
 
-          // comments, extract into separate service ?
-          var comments = ticket.Comments = [];
-          if (ticket.comments) {
-            $xhr('GET', ticket.comments, function(code, response) {
-              ticket.Comments = response;
+    /**
+     * Load all tickets from service [async]
+     * 
+     * @param {string} url
+     * @returns {Array<Object>} Empty array, will be filled with tickets when response is back
+     */
+    get: function(url) {
+      $xhr('GET', url, function(code, response) {
+        angular.forEach(response.items, function(url, i) {
+          $xhr('GET', url, function(code, ticket) {
+            tickets[i] = ticket;
+            $xhr('GET', ticket.author, function(code, user) {
+              tickets[i].Author = user;
             });
-          } else {
-            ticket.Comments = {items: []};
-          }
+
+            // comments, extract into separate service ?
+            var comments = ticket.Comments = [];
+            if (ticket.comments) {
+              $xhr('GET', ticket.comments, function(code, response) {
+                ticket.Comments = response;
+              });
+            } else {
+              ticket.Comments = {items: []};
+            }
+          });
         });
       });
-    });
 
-    return tickets;
-  };
+      return tickets;
+    },
 
-  $tickets.loadComments = function(ticket) {
-    angular.forEach(ticket.Comments.items, function(url, i) {
-      ticket.Comments.data = [];
-      $xhr('GET', url, function(code, response) {
-        ticket.Comments.data[i] = response;
+    /**
+     * Load comment details for given ticket [async]
+     * 
+     * @param {Object} ticket
+     */
+    loadComments: function(ticket) {
+      angular.forEach(ticket.Comments.items, function(url, i) {
+        ticket.Comments.data = [];
+        $xhr('GET', url, function(code, response) {
+          ticket.Comments.data[i] = response;
+        });
       });
-    });
+    }
   };
-
-  return $tickets;
 });

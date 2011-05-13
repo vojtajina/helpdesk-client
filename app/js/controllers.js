@@ -25,7 +25,7 @@ function TicketListCtrl($api, $resource) {
 function ProjectListCtrl($api, $resource) {
   var self = this;
 
-  $api('project', function(projectsUrl) {
+  $api('projects', function(projectsUrl) {
     self.projects = $resource(projectsUrl);
   });
 }

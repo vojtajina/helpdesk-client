@@ -56,7 +56,7 @@ describe('ProjectListCtrl', function() {
     project2 = {name: 'p2', description: '...'};
 
     var xhr = scope.$service('$browser').xhr;
-    xhr.expectGET(SERVICE_URL).respond({project: '/projects-url'});
+    xhr.expectGET(SERVICE_URL).respond({projects: '/projects-url'});
     xhr.expectGET('/projects-url').respond({items: ['/prj1', '/prj2']});
     xhr.expectGET('/prj1').respond(project1);
     xhr.expectGET('/prj2').respond(project2);

@@ -2660,7 +2660,7 @@ var Sizzle = function(selector, context, results, seed) {
 		soFar = selector;
 	
 	// Reset the position of the chunker regexp (start from head)
-	while ( (chunker.exec(""), m = chunker.exec(soFar)) !== null ) {
+	while ( (chunker.exec("") && (m = chunker.exec(soFar))) !== null ) {
 		soFar = m[3];
 		
 		parts.push( m[1] );
@@ -2909,8 +2909,8 @@ var Expr = Sizzle.selectors = {
 	match: {
 		ID: /#((?:[\w\u00c0-\uFFFF-]|\\.)+)/,
 		CLASS: /\.((?:[\w\u00c0-\uFFFF-]|\\.)+)/,
-		NAME: /\[name=['"]*((?:[\w\u00c0-\uFFFF-]|\\.)+)['"]*\]/,
-		ATTR: /\[\s*((?:[\w\u00c0-\uFFFF-]|\\.)+)\s*(?:(\S?=)\s*(['"]*)(.*?)\3|)\s*\]/,
+		NAME: /\[name=[\'\"]*((?:[\w\u00c0-\uFFFF-]|\\.)+)[\'\"]*\]/,
+		ATTR: /\[\s*((?:[\w\u00c0-\uFFFF-]|\\.)+)\s*(?:(\S?=)\s*([\'\"]*)(.*?)\3|)\s*\]/,
 		TAG: /^((?:[\w\u00c0-\uFFFF\*-]|\\.)+)/,
 		CHILD: /:(only|nth|last|first)-child(?:\((even|odd|[\dn+-]*)\))?/,
 		POS: /:(nth|eq|gt|lt|first|last|even|odd)(?:\((\d*)\))?(?=[^-]|$)/,

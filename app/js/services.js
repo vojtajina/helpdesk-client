@@ -106,10 +106,10 @@ ResourceCollection.prototype = {
     angular.forEach(this.relations_, function(type, name) {
       if (type == ResourceCollection.RELATION.ONE) {
         self.$xhr('GET', resource[name], function(code, relation) {
-          resource[name.charAt(0).toUpperCase() + name.slice(1)] = relation;
+          resource[ucfirst(name)] = relation;
         });
       } else if (type == ResourceCollection.RELATION.MANY) {
-        resource[name.charAt(0).toUpperCase() + name.slice(1)] = new ResourceCollection(self.$xhr, resource[name]);
+        resource[ucfirst(name)] = new ResourceCollection(self.$xhr, resource[name]);
       }
     });
   },

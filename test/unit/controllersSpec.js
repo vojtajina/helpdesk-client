@@ -30,19 +30,19 @@ describe('TicketListCtrl', function() {
 
   it('should load all tickets', function() {
     expect(ctrl.tickets).toBeDefined();
-    expect(ctrl.tickets.length).toBe(2);
+    expect(ctrl.tickets.items.length).toBe(2);
   });
 
   it('should load ticket details', function() {
-    expect(ctrl.tickets[0].id).toEqual(ticket1.id);
-    expect(ctrl.tickets[0].author).toEqual(ticket1.author);
-    expect(ctrl.tickets[1].id).toEqual(ticket2.id);
-    expect(ctrl.tickets[1].author).toEqual(ticket2.author);
+    expect(ctrl.tickets.items[0].id).toEqual(ticket1.id);
+    expect(ctrl.tickets.items[0].author).toEqual(ticket1.author);
+    expect(ctrl.tickets.items[1].id).toEqual(ticket2.id);
+    expect(ctrl.tickets.items[1].author).toEqual(ticket2.author);
   });
 
   it('should load author details', function() {
-    expect(ctrl.tickets[0].Author).toBe(author1);
-    expect(ctrl.tickets[1].Author).toBe(author2);
+    expect(ctrl.tickets.items[0].Author).toBe(author1);
+    expect(ctrl.tickets.items[1].Author).toBe(author2);
   });
 });
 
@@ -67,13 +67,13 @@ describe('ProjectListCtrl', function() {
 
   it('should load all projects', function() {
     expect(ctrl.projects).toBeDefined();
-    expect(ctrl.projects.length).toBe(2);
+    expect(ctrl.projects.items.length).toBe(2);
   });
 
   it('should load project details', function() {
-    expect(ctrl.projects[0].name).toEqual(project1.name);
-    expect(ctrl.projects[0].description).toEqual(project1.description);
-    expect(ctrl.projects[1].name).toEqual(project2.name);
-    expect(ctrl.projects[1].description).toEqual(project2.description);
+    expect(ctrl.projects.items[0].name).toEqual(project1.name);
+    expect(ctrl.projects.items[0].description).toEqual(project1.description);
+    expect(ctrl.projects.items[1].name).toEqual(project2.name);
+    expect(ctrl.projects.items[1].description).toEqual(project2.description);
   });
 });

@@ -3,15 +3,14 @@
  * 
  * Just loads all tickets immediately...
  * 
- * @param $api $api service
- * @param $tickets $tickets service
+ * @param {Object} $api API service
+ * @param {Object} $resource RESOURCE service
  */
-function TicketListCtrl($api, $tickets) {
+function TicketListCtrl($api, $resource) {
   var self = this;
-  this.loadComments = $tickets.loadComments;
 
   $api('tickets', function(ticketsUrl) {
-    self.tickets = $tickets.get(ticketsUrl);
+    self.tickets = $resource(ticketsUrl, {author: ResourceCollection.RELATION.ONE});
   });
 }
 
@@ -21,10 +20,12 @@ function TicketListCtrl($api, $tickets) {
  * Loads all projects immediately
  * 
  * @param {Object} $api API service
+ * @param {Object} $resource RESOURCE service
  */
-function ProjectListCtrl($api, $projects) {
+function ProjectListCtrl($api, $resource) {
   var self = this;
+
   $api('project', function(projectsUrl) {
-    self.projects = $projects(projectsUrl);
+    self.projects = $resource(projectsUrl);
   });
 }

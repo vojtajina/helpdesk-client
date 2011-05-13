@@ -1,0 +1,83 @@
+body {
+  background-color: #D0D0D0;
+}
+
+#main {
+  width: 600px;
+  height: 700px;
+  margin: auto;
+
+  box-shadow: 4px 4px 6px #48577D;
+  -moz-box-shadow: 4px 4px 6px #48577D;
+  -moz-border-radius: 25px;
+  border-radius: 25px;
+  -webkit-box-shadow: 4px 4px 6px #48577D;
+  -webkit-border-radius:25px;
+
+  background-color: #006;
+}
+
+#header, #footer {
+  color: #FFF;
+}
+
+#header {
+  height: 40px;
+  padding: 10px 20px;
+
+  font-size: 30pt;
+  font-weight: bold;
+  
+  text-shadow:1.5px 1.5px 1.5px red;
+  text-shadow:#909090 1.5px 1.5px 1.5px;
+}
+
+#footer {
+  height: 30px;
+  padding-top: 30px;
+  
+  font-size: 12pt;
+  text-align: center;
+}
+
+#footer a, #footer a:link, #footer a:visited {
+  text-decoration: none;
+  font-weight: bold;
+  color: #FFF;
+}
+
+#footer a:hover {
+  text-decoration: underline;
+  font-weight: bold;
+  color: #FFF;
+}
+
+#content {
+  height: 580px;
+  background-color: #FFF;
+  overflow: auto;
+}
+
+::-webkit-scrollbar {
+  width: 1em;
+  margin: 0.2em 0em;
+}
+
+::-webkit-scrollbar:hover {
+  background-color: #EEE;
+}
+
+::-webkit-scrollbar-thumb {
+  min-height: 0.8em;
+  min-width: 0.8em;
+  -webkit-border-radius: 0.5em;
+  background-color: #DDD;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #BBB;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: #888;
+}

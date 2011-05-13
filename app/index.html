@@ -6,37 +6,47 @@
   <link rel="stylesheet" href="css/app.css"/>
 </head>
 <body>
-
-  <div ng:controller="TicketListCtrl"> 
-    <h1>List of tickets</h1>
-    
-    <ul>
-      <li ng:repeat="ticket in tickets.items">
-        #<strong>{{ticket.number}}</strong> ({{ticket.created | gmtdate: 'd.m.yyyy HH:mm:ss'}})<br />
-        author: <strong>{{ticket.Author.name}}</strong> ({{ticket.Author.email}}, {{ticket.author}})
-        <p>{{ticket.description}}</p>
-        <span ng:show="!ticket.Comments.items.lenght">No comments</span>
-        <a href ng:click="ticket.Comments.loadDetails()" ng:show="ticket.Comments.items.lenght">Comments: {{ticket.Comments.items.length}}</a>
+  <div id="main">
+    <div id="header">
+    Helpdesk Client
+    </div>
+  
+    <div id="content">
+      <div ng:controller="TicketListCtrl"> 
+        <h1>List of tickets</h1>
+        
         <ul>
-          <li ng:repeat="comment in ticket.Comments.data">
-            {{comment.created | gmtdate: 'd.m.yyyy HH:mm:ss'}}: {{comment.text}}
+          <li ng:repeat="ticket in tickets.items">
+            #<strong>{{ticket.number}}</strong> ({{ticket.created | gmtdate: 'd.m.yyyy HH:mm:ss'}})<br />
+            author: <strong>{{ticket.Author.name}}</strong> ({{ticket.Author.email}}, {{ticket.author}})
+            <p>{{ticket.description}}</p>
+            <span ng:show="!ticket.Comments.items.lenght">No comments</span>
+            <a href ng:click="ticket.Comments.loadDetails()" ng:show="ticket.Comments.items.lenght">Comments: {{ticket.Comments.items.length}}</a>
+            <ul>
+              <li ng:repeat="comment in ticket.Comments.data">
+                {{comment.created | gmtdate: 'd.m.yyyy HH:mm:ss'}}: {{comment.text}}
+              </li>
+            </ul>
           </li>
         </ul>
-      </li>
-    </ul>
+      </div>
+    
+      <div ng:controller="ProjectListCtrl">
+        <h1>List of projects</h1>
+    
+        <ul>
+          <li ng:repeat="project in projects.items">
+            <h3>{{project.name}}</h3>
+            <p>{{project.description}}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  
+    <div id="footer">
+      Powered by <a href="http://angularjs.org" target="_blank">&lt;angular /&gt;</a>
+    </div>
   </div>
-
-  <div ng:controller="ProjectListCtrl">
-    <h1>List of projects</h1>
-
-    <ul>
-      <li ng:repeat="project in projects.items">
-        <h3>{{project.name}}</h3>
-        <p>{{project.description}}</p>
-      </li>
-    </ul>
-  </div>
-
   <script src="lib/angular/angular.js" ng:autobind></script>
   <script src="js/utils.js"></script>
   <script src="js/services.js"></script>

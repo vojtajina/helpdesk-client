@@ -89,3 +89,23 @@ angular.service('$tickets', function($xhr) {
     }
   };
 });
+
+/**
+ * PROJECTS service [async]
+ * 
+ * TODO(vojta) create general "collection" model
+ */
+angular.service('$projects', function($xhr) {
+  var projects = [];
+  return function(url) {
+    $xhr('GET', url, function(code, response) {
+      angular.forEach(response.items, function(url, i) {
+        $xhr('GET', url, function(code, response) {
+          projects[i] = response;
+        });
+      });
+    });
+
+    return projects;
+  };
+});

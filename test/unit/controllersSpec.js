@@ -11,7 +11,7 @@ describe('TicketListCtrl', function() {
   beforeEach(function() {
     var scope = angular.scope();
 
-    ticket1 = {id: 't1', author: '/url-auth1'},
+    ticket1 = {id: 't1', author: '/url-auth1'};
     ticket2 = {id: 't2', author: '/url-auth2'};
     author1 = {};
     author2 = {};
@@ -43,5 +43,37 @@ describe('TicketListCtrl', function() {
   it('should load author details', function() {
     expect(ctrl.tickets[0].Author).toBe(author1);
     expect(ctrl.tickets[1].Author).toBe(author2);
+  });
+});
+
+describe('ProjectListCtrl', function() {
+  var ctrl, ticket1, ticket2, author1, author2;
+
+  beforeEach(function() {
+    var scope = angular.scope();
+
+    project1 = {name: 'p1', description: '....'};
+    project2 = {name: 'p2', description: '...'};
+
+    var xhr = scope.$service('$browser').xhr;
+    xhr.expectGET(SERVICE_URL).respond({project: '/projects-url'});
+    xhr.expectGET('/projects-url').respond({items: ['/prj1', '/prj2']});
+    xhr.expectGET('/prj1').respond(project1);
+    xhr.expectGET('/prj2').respond(project2);
+
+    ctrl = scope.$new(ProjectListCtrl);
+    xhr.flush();
+  });
+
+  it('should load all projects', function() {
+    expect(ctrl.projects).toBeDefined();
+    expect(ctrl.projects.length).toBe(2);
+  });
+
+  it('should load project details', function() {
+    expect(ctrl.projects[0].name).toEqual(project1.name);
+    expect(ctrl.projects[0].description).toEqual(project1.description);
+    expect(ctrl.projects[1].name).toEqual(project2.name);
+    expect(ctrl.projects[1].description).toEqual(project2.description);
   });
 });

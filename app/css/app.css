@@ -2,6 +2,10 @@ body {
   background-color: #D0D0D0;
 }
 
+h1, h2 {
+  margin: 0;
+}
+
 #main {
   width: 600px;
   height: 700px;
@@ -22,12 +26,12 @@ body {
 }
 
 #header {
-  height: 40px;
-  padding: 10px 20px;
+  height: 60px;
+}
 
-  font-size: 30pt;
-  font-weight: bold;
-  
+#header h1 {
+  padding: 6px 25px;
+  font-size: 2.5em;
   text-shadow:1.5px 1.5px 1.5px red;
   text-shadow:#909090 1.5px 1.5px 1.5px;
 }
@@ -53,31 +57,95 @@ body {
 }
 
 #content {
-  height: 580px;
+  height: 560px;
   background-color: #FFF;
   overflow: auto;
+  padding: 10px 10px;
 }
 
-::-webkit-scrollbar {
+#content::-webkit-scrollbar {
   width: 1em;
   margin: 0.2em 0em;
 }
 
-::-webkit-scrollbar:hover {
+#content::-webkit-scrollbar:hover {
   background-color: #EEE;
 }
 
-::-webkit-scrollbar-thumb {
+#content::-webkit-scrollbar-thumb {
   min-height: 0.8em;
   min-width: 0.8em;
   -webkit-border-radius: 0.5em;
   background-color: #DDD;
 }
 
-::-webkit-scrollbar-thumb:hover {
+#content::-webkit-scrollbar-thumb:hover {
   background-color: #BBB;
 }
 
-::-webkit-scrollbar-thumb:active {
+#content::-webkit-scrollbar-thumb:active {
   background-color: #888;
+}
+
+div.section {
+  padding-bottom: 20px;
+}
+
+div.ticket-new textarea {
+  height: 44px;
+  width: 450px;
+  float: left;
+}
+
+div.ticket-new button {
+  height: 50px;
+  width: 100px;
+  margin-left: 5px;
+}
+
+ul.ticket-list, ul.project-list {
+  padding: 0;
+}
+
+ul.ticket-list li, ul.project-list li {
+  list-style: none;
+  margin: 0 -10px;
+  padding: 10px 20px;
+  border-bottom: 1px solid #BBB;
+}
+
+ul.ticket-list li:nth-child(odd), ul.project-list li:nth-child(odd) {
+  background-color: #E0E0E0;
+}
+
+span.ticket-number, span.ticket-author {
+  font-weight: bold;
+}
+
+span.ticket-state {
+  font-family: "Tahoma", "Arial";
+  margin-left: -10px;
+  padding: 0 3px;
+  background-color: #FFF;
+  border: 1px solid #BBB;
+}
+
+span.invalid {
+  background-color: #888;
+}
+
+span.closed {
+  background-color: #000;
+}
+
+span.open {
+  background-color: #0F0;
+}
+
+span.new {
+  background-color: #09F;
+}
+
+p.ticket-description {
+  font-style: italic;
 }

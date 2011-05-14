@@ -46,3 +46,17 @@ function ProjectListCtrl($api, $resource) {
     self.projects = $resource(projectsUrl, 'application/vnd.helpdesk.project+json');
   });
 }
+
+ProjectListCtrl.prototype = {
+  createProject: function() {
+    this.projects.create(this.newProject);
+    this.resetNewProject();
+  },
+
+  resetNewProject: function() {
+    this.newProject = {
+      name: '',
+      description: ''
+    };
+  }
+};

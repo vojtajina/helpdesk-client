@@ -103,6 +103,22 @@ div.ticket-new button {
   margin-left: 5px;
 }
 
+div.project-new input {
+  width: 557px;
+}
+
+div.project-new textarea {
+  height: 44px;
+  width: 450px;
+  float: left;
+}
+
+div.project-new button {
+  height: 50px;
+  width: 100px;
+  margin-left: 5px;
+}
+
 ul.ticket-list, ul.project-list {
   padding: 0;
 }

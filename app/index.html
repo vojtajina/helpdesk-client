@@ -38,21 +38,31 @@
         </div>
       </div>
 
-      <div ng:controller="ProjectListCtrl" class="section project-list">
-        <h2>List of projects ({{projects.items.length}})</h2>
-        <ul class="project-list">
-          <li ng:repeat="project in projects.items">
-            <h3>{{project.name}}</h3>
-            <p>{{project.description}}</p>
-          </li>
-        </ul>
+      <div ng:controller="ProjectListCtrl">
+        <div class="section project-new">
+          <h2>New Project</h2>
+          <input type="text" name="newProject.name" />
+          <textarea name="newProject.description"></textarea>
+          <button ng:click="createProject()">CREATE</button>
+        </div>
+
+        <div class="section project-list">
+          <h2>List of projects ({{projects.items.length}})</h2>
+          <ul class="project-list">
+            <li ng:repeat="project in projects.items">
+              <h3>{{project.name}}</h3>
+              <p>{{project.description}}</p>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
-  
+
     <div id="footer">
       Powered by <a href="http://angularjs.org" target="_blank">&lt;angular /&gt;</a>
     </div>
   </div>
+
   <script src="lib/angular/angular.js" ng:autobind></script>
   <script src="js/utils.js"></script>
   <script src="js/services.js"></script>

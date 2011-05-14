@@ -10,9 +10,26 @@ function TicketListCtrl($api, $resource) {
   var self = this;
 
   $api('tickets', function(ticketsUrl) {
-    self.tickets = $resource(ticketsUrl, {author: ResourceCollection.RELATION.ONE});
+    self.tickets = $resource(ticketsUrl, 'application/vnd.helpdesk.ticket+json', {author: ResourceCollection.RELATION.ONE});
   });
+  
+  this.resetNewTicket();
 }
+
+TicketListCtrl.prototype = {
+  createTicket: function() {
+    this.tickets.create(this.newTicket);
+    this.resetNewTicket();
+  },
+
+  resetNewTicket: function() {
+    this.newTicket = {
+      author: '/api/v1/user/agdjY2MwMjExchILEgpVc2VyRW50aXR5GKm6BAw',
+      project: '/api/v1/project/agdjY2MwMjExchULEg1Qcm9qZWN0RW50aXR5GMKyBAw',
+      description: ''
+    };
+  }
+};
 
 /**
  * ProjectListCtrl
@@ -26,6 +43,6 @@ function ProjectListCtrl($api, $resource) {
   var self = this;
 
   $api('projects', function(projectsUrl) {
-    self.projects = $resource(projectsUrl);
+    self.projects = $resource(projectsUrl, 'application/vnd.helpdesk.project+json');
   });
 }

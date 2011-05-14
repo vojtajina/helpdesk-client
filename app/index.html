@@ -12,9 +12,12 @@
     </div>
   
     <div id="content">
-      <div ng:controller="TicketListCtrl"> 
-        <h1>List of tickets</h1>
-        
+      <div ng:controller="TicketListCtrl">
+        <h1>New Ticket</h1>
+          <textarea name="newTicket.description"></textarea>
+          <button ng:click="createTicket()">CREATE</button> 
+        <h1>List of tickets ({{tickets.items.length}})</h1>
+
         <ul>
           <li ng:repeat="ticket in tickets.items">
             #<strong>{{ticket.number}}</strong> ({{ticket.created | gmtdate: 'd.m.yyyy HH:mm:ss'}})<br />
@@ -32,7 +35,7 @@
       </div>
     
       <div ng:controller="ProjectListCtrl">
-        <h1>List of projects</h1>
+        <h1>List of projects ({{projects.items.length}})</h1>
     
         <ul>
           <li ng:repeat="project in projects.items">

@@ -42,11 +42,12 @@ angular.service('$api', function($xhr) {
  * @see ResourceCollection
  * 
  * @param {string} url Url for the collection
- * @param {Object=} relations Relations of this resource (1-1, 1-N)
+ * @param {string} contentType Content-Type of this resource (for POST/PUT requests)
+ * @param {Object=} relations Relations of this resource (1-1, 1-N) 
  */
 angular.service('$resource', function($xhr) {
-  return function(url, relations) {
-    return new ResourceCollection($xhr, url, true, relations);
+  return function(url, contentType, relations) {
+    return new ResourceCollection($xhr, url, true, relations, contentType);
   };
 });
 
@@ -59,11 +60,14 @@ angular.service('$resource', function($xhr) {
  * @param {string} url Url of the collection
  * @param {boolean=} autoload Should auto load details of all resources ?
  * @param {Object=} relations Configuration of relations
+ * @param {string=} contentType
  * @returns {ResourceCollection}
  */
-function ResourceCollection($xhr, url, autoload, relations) {
+function ResourceCollection($xhr, url, autoload, relations, contentType) {
   this.$xhr = $xhr;
+  this.url = url;
   this.relations_ = relations;
+  this.contentType = contentType;
   this.items = [];
   this.loadIndex(url, autoload);
 }
@@ -72,12 +76,11 @@ ResourceCollection.prototype = {
 
   /**
    * Load index (array of urls)
-   * @param {string} url
    * @param {boolean} autoload Should load all details when index loaded ?
    */
-  loadIndex: function(url, autoload) {
+  loadIndex: function(autoload) {
     var self = this;
-    this.$xhr('GET', url, function(code, response) {
+    this.$xhr('GET', this.url, function(code, response) {
       self.items_ = response.items;
       if (autoload) self.loadDetails();
     });
@@ -121,6 +124,21 @@ ResourceCollection.prototype = {
    */
   countTotal: function() {
     return this.items_.length;
+  },
+
+  /**
+   * Create new resource
+   * Sends POST request to server and adds response into collection
+   * 
+   * @param {Object} resource
+   */
+  create: function(resource) {
+    var self = this;
+    this.$xhr('POST', this.url, resource, function(code, resourceFromServer, headers) {
+      // TODO(vojta) parse location (remove domain)
+      self.items_.unshift(headers.Location || 'new-resource');
+      self.items.unshift(resourceFromServer);
+    }, {'Content-Type': this.contentType});
   }
 };
 

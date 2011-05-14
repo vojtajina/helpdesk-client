@@ -78,7 +78,7 @@ describe('$resource', function() {
     xhr.expectGET('/first').respond({id: '1', relation: '/rel-url'});
     xhr.expectGET('/rel-url').respond({id: 'relation'});
 
-    var rc = scope.$service('$resource')('/url', {relation: ResourceCollection.RELATION.ONE});
+    var rc = scope.$service('$resource')('/url', null, {relation: ResourceCollection.RELATION.ONE});
     xhr.flush();
 
     expect(rc.items[0].Relation.id).toEqual('relation');
@@ -89,11 +89,31 @@ describe('$resource', function() {
     xhr.expectGET('/first').respond({id: '1', relation: '/rel-url'});
     xhr.expectGET('/rel-url').respond({items: ['/rel1', '/rel2']});
 
-    var rc = scope.$service('$resource')('/url', {relation: ResourceCollection.RELATION.MANY});
+    var rc = scope.$service('$resource')('/url', null, {relation: ResourceCollection.RELATION.MANY});
     xhr.flush();
 
     expect(rc.items[0].Relation).toBeDefined();
     expect(rc.items[0].Relation instanceof ResourceCollection).toBe(true);
     expect(rc.items[0].Relation.countTotal()).toEqual(2);
+  });
+  
+  describe('create', function() {
+    it('should send POST request with Content-Type header and prepend response to local items', function() {
+      expectItems(['/first']);
+      xhr.expectGET('/first').respond({id: '1'});
+
+      var rc = scope.$service('$resource')('/url', 'application/vnd.helpdesk.ticket+json');
+      xhr.flush();
+
+      var resourceNew = {id: 'new'};
+      var resourceFromServer = {id: 'from-server'};
+      xhr.expectPOST('/url', resourceNew, {'Content-Type': 'application/vnd.helpdesk.ticket+json'}).respond(resourceFromServer);    
+      rc.create(resourceNew);
+      xhr.flush();
+
+      expect(rc.items.length).toBe(2);
+      expect(rc.countTotal()).toBe(2);
+      expect(rc.items[0].id).toEqual('from-server');
+    });
   });
 });

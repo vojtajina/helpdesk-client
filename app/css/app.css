@@ -140,8 +140,9 @@ span.ticket-number, span.ticket-author {
 
 span.ticket-state {
   font-family: "Tahoma", "Arial";
+  font-weight: bold;
   margin-left: -10px;
-  padding: 0 3px;
+  padding: 1px 5px;
   background-color: #FFF;
   border: 1px solid #BBB;
 }
@@ -160,6 +161,7 @@ span.open {
 
 span.new {
   background-color: #09F;
+  color: #FFF;
 }
 
 p.ticket-description {

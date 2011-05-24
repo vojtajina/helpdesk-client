@@ -1,8 +1,8 @@
 /**
  * TicketListCtrl
- * 
+ *
  * Just loads all tickets immediately...
- * 
+ *
  * @param {Object} $api API service
  * @param {Object} $resource RESOURCE service
  */
@@ -12,7 +12,7 @@ function TicketListCtrl($api, $resource) {
   $api('tickets', function(ticketsUrl) {
     self.tickets = $resource(ticketsUrl, 'application/vnd.helpdesk.ticket+json', {author: ResourceCollection.RELATION.ONE});
   });
-  
+
   this.resetNewTicket();
 }
 
@@ -33,9 +33,9 @@ TicketListCtrl.prototype = {
 
 /**
  * ProjectListCtrl
- * 
+ *
  * Loads all projects immediately
- * 
+ *
  * @param {Object} $api API service
  * @param {Object} $resource RESOURCE service
  */

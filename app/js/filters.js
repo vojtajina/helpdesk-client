@@ -2,7 +2,7 @@
  * Simple wrapper filter for angular.filter.date
  * Converts gmt datetime format into ISO 8601 extended
  * @see angular.filter.date
- * 
+ *
  * @param {string} str
  * @param {string} format
  */

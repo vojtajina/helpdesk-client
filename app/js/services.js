@@ -7,10 +7,10 @@ var SERVICE_URL = '/api/v1';
  * API service [async]
  * Loads API from the REST service
  * Do simple caching as well
- * 
+ *
  * TODO use local storage as cache ?
  * TODO don't cache, rely on $xhr instead ?
- * 
+ *
  * @param {string} name Name of the api
  * @param {Function} done Will be called when api loaded, with given api as param
  */
@@ -30,20 +30,20 @@ angular.service('$api', function($xhr) {
           fn[1](api[fn[0]]);
         });
         done(response[name]);
-      });      
+      });
     }
   };
 });
 
 /**
  * RESOURCE factory service
- * 
+ *
  * Creates resource collection for given url
  * @see ResourceCollection
- * 
+ *
  * @param {string} url Url for the collection
  * @param {string} contentType Content-Type of this resource (for POST/PUT requests)
- * @param {Object=} relations Relations of this resource (1-1, 1-N) 
+ * @param {Object=} relations Relations of this resource (1-1, 1-N)
  */
 angular.service('$resource', function($xhr) {
   return function(url, contentType, relations) {
@@ -53,10 +53,10 @@ angular.service('$resource', function($xhr) {
 
 /**
  * ResourceCollection represents a collection of resources
- * 
+ *
  * TODO(vojta) pagination
- * 
- * @param {Object} $xhr Angular's $xhr service 
+ *
+ * @param {Object} $xhr Angular's $xhr service
  * @param {string} url Url of the collection
  * @param {boolean=} autoload Should auto load details of all resources ?
  * @param {Object=} relations Configuration of relations
@@ -119,7 +119,7 @@ ResourceCollection.prototype = {
 
   /**
    * Number of resources in the collection
-   * 
+   *
    * @returns {Number}
    */
   countTotal: function() {
@@ -129,7 +129,7 @@ ResourceCollection.prototype = {
   /**
    * Create new resource
    * Sends POST request to server and adds response into collection
-   * 
+   *
    * @param {Object} resource
    */
   create: function(resource) {

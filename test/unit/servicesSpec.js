@@ -38,11 +38,11 @@ describe('$api', function() {
 
 describe('$resource', function() {
   var scope, xhr;
-  
+
   function expectItems(items) {
     xhr.expectGET('/url').respond({items: items});
   }
-  
+
   beforeEach(function() {
     scope = angular.scope();
     xhr = scope.$service('$browser').xhr;
@@ -62,7 +62,7 @@ describe('$resource', function() {
     expect(rc.items[1].id).toEqual('2');
     expect(rc.items[2].id).toEqual('3');
   });
-  
+
   it('countTotal() should return number of resources even before details are loaded', function() {
     expectItems(['/first', '/second', '/third']);
 
@@ -96,7 +96,7 @@ describe('$resource', function() {
     expect(rc.items[0].Relation instanceof ResourceCollection).toBe(true);
     expect(rc.items[0].Relation.countTotal()).toEqual(2);
   });
-  
+
   describe('create', function() {
     it('should send POST request with Content-Type header and prepend response to local items', function() {
       expectItems(['/first']);
@@ -107,7 +107,7 @@ describe('$resource', function() {
 
       var resourceNew = {id: 'new'};
       var resourceFromServer = {id: 'from-server'};
-      xhr.expectPOST('/url', resourceNew, {'Content-Type': 'application/vnd.helpdesk.ticket+json'}).respond(resourceFromServer);    
+      xhr.expectPOST('/url', resourceNew, {'Content-Type': 'application/vnd.helpdesk.ticket+json'}).respond(resourceFromServer);
       rc.create(resourceNew);
       xhr.flush();
 

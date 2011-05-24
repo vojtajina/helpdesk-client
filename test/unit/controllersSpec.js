@@ -1,7 +1,7 @@
 /**
  * TODO(vojta) Extract all service interface related code (urls, response structures, etc)
  * into one place, so that we can easily maintain it.
- * 
+ *
  * ? Script for fetching / updating latest API from real service, so we can do integration test
  * with the REST service whenever it changes
  */

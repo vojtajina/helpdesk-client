@@ -127,7 +127,7 @@ function HackedBrowser(window, document, body, XHR, $log) {
       });
       xhr.onreadystatechange = function() {
         if (xhr.readyState == 4) {
-          completeOutstandingRequest(callback, xhr.status || 200, xhr.responseText, xhr.getAllResponseHeaders());
+          completeOutstandingRequest(callback, xhr.status || 200, xhr.responseText, xhr);
         }
       };
       xhr.send(post || '');

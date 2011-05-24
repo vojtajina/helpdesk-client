@@ -17,7 +17,7 @@ angular.service('$xhr', function($browser, $error, $log, $updateView) {
     headers = headers || {};
     headers['X-XSRF-TOKEN'] = $browser.cookies()['XSRF-TOKEN'];
 
-    $browser.xhr(method, url, post, function(code, response, headers) {
+    $browser.xhr(method, url, post, function(code, response, xhr) {
       try {
         if (angular.isString(response)) {
           if (response.match(/^\)\]\}',\n/)) response = response.substr(6);
@@ -26,7 +26,9 @@ angular.service('$xhr', function($browser, $error, $log, $updateView) {
           }
         }
         if (200 <= code && code < 300) {
-          callback(code, response, headers || {});
+          callback(code, response, function(name) {
+            return xhr && xhr.getResponseHeader(name) || 'fake-header';
+          });
         } else {
           $error(
             {method: method, url:url, data:post, callback:callback},

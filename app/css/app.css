@@ -6,6 +6,11 @@ h1, h2 {
   margin: 0;
 }
 
+.wrapper {
+  width: 100%;
+  clear: both;
+}
+
 #main {
   width: 600px;
   height: 700px;
@@ -166,4 +171,8 @@ span.new {
 
 p.ticket-description {
   font-style: italic;
+}
+
+a.delete {
+  float: right;
 }

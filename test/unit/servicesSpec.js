@@ -116,4 +116,24 @@ describe('$resource', function() {
       expect(rc.items[0].id).toEqual('from-server');
     });
   });
+
+  describe('destroy', function() {
+    it('should send DELETE request and remove local item', function() {
+      var resource = {link: '/first-url', other: 'field'};
+      expectItems([resource.link, '/second-url']);
+      xhr.expectGET(resource.link).respond(resource);
+      xhr.expectGET('/second-url').respond({id: '2', link: '/second-url'});
+
+      var rc = scope.$service('$resource')('/url', 'application/vnd.helpdesk.ticket+json');
+      xhr.flush();
+
+      xhr.expectDELETE(resource.link).respond({});
+      rc.destroy(resource);
+      xhr.flush();
+
+      expect(rc.countTotal()).toBe(1);
+      expect(rc.items_).not.toContain('/first-url');
+      expect(rc.items).not.toContain(resource);
+    });
+  });
 });

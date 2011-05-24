@@ -139,6 +139,28 @@ ResourceCollection.prototype = {
       self.items_.unshift(headers.Location || 'new-resource');
       self.items.unshift(resourceFromServer);
     }, {'Content-Type': this.contentType});
+  },
+
+  /**
+   * Delete given resource
+   * Sends DELETE request to server and remove from local collection
+   *
+   * @param {Object} resource
+   */
+  destroy: function(resource) {
+    var self = this,
+        url = resource.link;
+
+    this.$xhr('DELETE', url, function(code, response, headers) {
+      var i = self.countTotal();
+
+      while (i--) {
+        if (self.items_[i] == url) break;
+      }
+
+      self.items.splice(i, 1);
+      self.items_.splice(i, 1);
+    });
   }
 };
 

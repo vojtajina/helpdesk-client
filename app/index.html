@@ -26,6 +26,7 @@
               <span class="ticket-state" ng:class="ticket.state.toLowerCase()">{{ticket.state}}</span>
               <span class="ticket-number">#{{ticket.number}}</span> by <span class="ticket-author">{{ticket.Author.name}}</span> ({{ticket.Author.email}}) at <span class="ticket-created">{{ticket.created | gmtdate: 'd.M.yyyy HH:mm:ss'}}</span><br />
               <p class="ticket-description">{{ticket.description}}</p>
+              <a href ng:click="tickets.destroy(ticket)" class="delete">delete</a>
               <span ng:show="!ticket.Comments.items.lenght">No comments</span>
               <a href ng:click="ticket.Comments.loadDetails()" ng:show="ticket.Comments.items.lenght">Comments: {{ticket.Comments.items.length}}</a>
               <ul>
@@ -52,6 +53,8 @@
             <li ng:repeat="project in projects.items">
               <h3>{{project.name}}</h3>
               <p>{{project.description}}</p>
+              <a href ng:click="projects.destroy(project)" class="delete">delete</a>
+              <div class="wrapper"></div>
             </li>
           </ul>
         </div>

@@ -32,6 +32,6 @@ cp "$APP_DIR/lib/angular/angular.min.js" $BUILD_DIR
 # change the index.html
 sed -Ei "s|css/app.css|helpdesk.css|" "$BUILD_DIR/index.html"
 sed -Ei "s|lib/angular/angular.js|angular.min.js|" "$BUILD_DIR/index.html"
-sed -Ei "s|js/utils.js|helpdesk.js|" "$BUILD_DIR/index.html"
+sed -Ei "s|js/utils.js|helpdesk.min.js|" "$BUILD_DIR/index.html"
 sed -Ei "/script src=\"js/d" "$BUILD_DIR/index.html"
 

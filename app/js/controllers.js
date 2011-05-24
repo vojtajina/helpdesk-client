@@ -31,6 +31,8 @@ TicketListCtrl.prototype = {
   }
 };
 
+TicketListCtrl.$inject = ['$api', '$resource'];
+
 /**
  * ProjectListCtrl
  *
@@ -60,3 +62,5 @@ ProjectListCtrl.prototype = {
     };
   }
 };
+
+ProjectListCtrl.$inject = ['$api', '$resource'];

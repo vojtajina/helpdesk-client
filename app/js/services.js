@@ -33,7 +33,7 @@ angular.service('$api', function($xhr) {
       });
     }
   };
-});
+}, {$inject: ['$xhr']});
 
 /**
  * RESOURCE factory service
@@ -49,7 +49,7 @@ angular.service('$resource', function($xhr) {
   return function(url, contentType, relations) {
     return new ResourceCollection($xhr, url, true, relations, contentType);
   };
-});
+}, {$inject: ['$xhr']});
 
 /**
  * ResourceCollection represents a collection of resources

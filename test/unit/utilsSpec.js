@@ -4,3 +4,9 @@ describe('ucfirst', function() {
     expect(ucfirst('whatever')).toEqual('Whatever');
   });
 });
+
+describe('pathFromUrl', function() {
+  it('should extract path from full url', function() {
+    expect(pathFromUrl('http://service.com/api/v1/ticket')).toBe('/api/v1/ticket');
+  });
+});

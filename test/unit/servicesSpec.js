@@ -107,13 +107,17 @@ describe('$resource', function() {
 
       var resourceNew = {id: 'new'};
       var resourceFromServer = {id: 'from-server'};
+
       xhr.expectPOST('/url', resourceNew, {'Content-Type': 'application/vnd.helpdesk.ticket+json'}).respond(resourceFromServer);
+      xhr.expectGET('fake-header').respond(resourceFromServer);
+      spyOn(rc, 'loadRelations');
+
       rc.create(resourceNew);
       xhr.flush();
 
-      expect(rc.items.length).toBe(2);
       expect(rc.countTotal()).toBe(2);
-      expect(rc.items[0].id).toEqual('from-server');
+      expect(rc.items.pop().id).toEqual('from-server');
+      expect(rc.loadRelations).toHaveBeenCalled();
     });
   });
 

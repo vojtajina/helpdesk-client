@@ -135,9 +135,15 @@ ResourceCollection.prototype = {
   create: function(resource) {
     var self = this;
     this.$xhr('POST', this.url, resource, function(code, resourceFromServer, headers) {
-      // TODO(vojta) parse location (remove domain)
-      self.items_.unshift(headers.Location || 'new-resource');
-      self.items.unshift(resourceFromServer);
+      var url = pathFromUrl(headers('Location')),
+          i = self.items_.push(url) - 1;
+
+      // do request detail
+      // TODO(vojta) remove when implemented on service
+      self.$xhr('GET', url, function(code, resource) {
+        self.loadRelations(resource);
+        self.items[i] = resource;
+      });
     }, {'Content-Type': this.contentType});
   },
 

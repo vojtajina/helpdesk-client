@@ -1,3 +1,27 @@
+describe('MainCtrl', function() {
+  var $auth, ctrl;
+
+  beforeEach(function() {
+    var scope = createScopeWithMockAuth();
+    $auth = scope.$service('$auth');
+    ctrl = scope.$new(MainCtrl);
+  });
+
+  describe('isAuth', function() {
+    it('should return true when active token', function() {
+      $auth.token = '';
+      expect(ctrl.isAuth()).toBe(false);
+      delete $auth.token;
+      expect(ctrl.isAuth()).toBe(false);
+    });
+
+    it('should return false when no active token', function() {
+      $auth.token = 'token';
+      expect(ctrl.isAuth()).toBe(true);
+    });
+  });
+});
+
 /**
  * TODO(vojta) Extract all service interface related code (urls, response structures, etc)
  * into one place, so that we can easily maintain it.

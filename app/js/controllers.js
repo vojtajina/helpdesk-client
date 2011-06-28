@@ -9,6 +9,17 @@ function MainCtrl($auth) {
   this.$auth = $auth;
 }
 
+MainCtrl.prototype = {
+
+  /**
+   * Is current user authenticated ?
+   * @returns {boolean}
+   */
+  isAuth: function() {
+    return !!this.$auth.token;
+  }
+};
+
 MainCtrl.$inject = ['$auth'];
 
 /**

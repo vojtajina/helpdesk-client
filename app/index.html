@@ -17,7 +17,7 @@
         <div class="section ticket-new">
           <h2>New Ticket</h2>
           <textarea name="newTicket.description"></textarea>
-          <button ng:click="createTicket()">CREATE</button>
+          <button disabled="{{!isAuth()}}" ng:click="createTicket()">CREATE</button>
         </div>
 
         <div class="section ticket-list">
@@ -45,7 +45,7 @@
           <h2>New Project</h2>
           <input type="text" name="newProject.name" />
           <textarea name="newProject.description"></textarea>
-          <button ng:click="createProject()">CREATE</button>
+          <button disabled="{{!isAuth()}}" ng:click="createProject()">CREATE</button>
         </div>
 
         <div class="section project-list">

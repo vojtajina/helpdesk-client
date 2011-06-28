@@ -7,6 +7,7 @@
 angular.service('$xhr', function($browser, $error, $log, $updateView) {
   return function(method, url, post, callback, headers) {
     if (angular.isFunction(post)) {
+      headers = callback;
       callback = post;
       post = null;
     }

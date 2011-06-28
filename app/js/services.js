@@ -1,7 +1,8 @@
 /**
- * Entry point of REST service
+ * Entry points of REST service
  */
-var SERVICE_URL = '/api/v1';
+var SERVICE_URL = '/api/v1',
+    SERVICE_AUTH = '/_ah/authorization/';
 
 /**
  * API service [async]
@@ -33,7 +34,7 @@ angular.service('$api', function($xhr) {
       });
     }
   };
-}, {$inject: ['$xhr']});
+}, {$inject: ['$authXhr']});
 
 /**
  * RESOURCE factory service
@@ -49,7 +50,7 @@ angular.service('$resource', function($xhr) {
   return function(url, contentType, relations) {
     return new ResourceCollection($xhr, url, true, relations, contentType);
   };
-}, {$inject: ['$xhr']});
+}, {$inject: ['$authXhr']});
 
 /**
  * ResourceCollection represents a collection of resources
@@ -178,3 +179,75 @@ ResourceCollection.RELATION = {
   ONE: 1,
   MANY: 2
 };
+
+/**
+ * AUTH service
+ * Exposes information about currently authenticated user
+ *
+ * @property {string} token Auth token
+ * @property {string} user Url of the user
+ * @property {object} User User details
+ * @property {string} signout Url for signing out
+ */
+angular.service('$auth', function($xhr) {
+  var $auth = {};
+
+  $xhr('GET', SERVICE_AUTH, function(code, response) {
+    angular.extend($auth, response);
+
+    // load user details
+    $xhr('GET', response.user, function(code, user) {
+      $auth.User = user;
+    }, {Authorization: response.token});
+  });
+
+  return $auth;
+}, {$inject: ['$xhr']});
+
+/**
+ * AUTH XHR service [async]
+ *
+ * Wrapper for $xhr service, provides same API as $xhr.
+ * Adds Authorization header for every request.
+ * If Authorization token not available yet, this service will delay the request.
+ *
+ * @param {string} method
+ * @param {string} url
+ * @param {object=|string=|function(Number, string)} data Optional data (or callback)
+ * @param {function(Number, string)|object=} callback Function that will be called with response
+ * @param {object=} headers Optional headers
+ */
+angular.service('$authXhr', function($auth, $xhr) {
+  var delayedRequests = [];
+
+  // watch when new token arrives and flush all delayed xhr requests
+  this.$watch(function() {
+    return $auth.token;
+  }, function(newToken) {
+    if (newToken) {
+      angular.forEach(delayedRequests, function(args) {
+        args[4].Authorization = newToken;
+        $xhr.apply(null, args);
+      });
+    }
+  });
+
+  return function(method, url, data, callback, headers) {
+    if (angular.isFunction(data)) {
+      headers = callback;
+      callback = data;
+      data = null;
+    }
+
+    headers = headers || {};
+
+    // token is ready
+    if ($auth.token) {
+      headers.Authorization = $auth.token;
+      $xhr(method, url, data, callback, headers);
+    // delay request (wait for auth token)
+    } else {
+      delayedRequests.push([method, url, data, callback, headers]);
+    }
+  };
+}, {$inject: ['$auth', '$xhr']});

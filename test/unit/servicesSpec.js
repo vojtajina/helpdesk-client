@@ -3,7 +3,7 @@ describe('$api', function() {
       $api, xhr, callback;
 
   beforeEach(function() {
-    var scope = angular.scope();
+    var scope = createScopeWithMockAuth();
     $api = scope.$service('$api');
     xhr = scope.$service('$browser').xhr;
     xhr.expectGET(SERVICE_URL).respond(API);
@@ -44,7 +44,7 @@ describe('$resource', function() {
   }
 
   beforeEach(function() {
-    scope = angular.scope();
+    scope = createScopeWithMockAuth();
     xhr = scope.$service('$browser').xhr;
   });
 
@@ -139,5 +139,51 @@ describe('$resource', function() {
       expect(rc.items_).not.toContain('/first-url');
       expect(rc.items).not.toContain(resource);
     });
+  });
+});
+
+describe('$auth', function() {
+  var $auth, xhr;
+
+  beforeEach(function() {
+    var scope = angular.scope();
+    xhr = scope.$service('$browser').xhr;
+    xhr.expectGET(SERVICE_AUTH).respond({token: '%token%', user: '/user-url'});
+    $auth = scope.$service('$auth');
+  });
+
+  it('should load and expose token', function() {
+    xhr.flush();
+    expect($auth.token).toEqual('%token%');
+  });
+
+  it('should load User details', function() {
+    xhr.expectGET('/user-url', null, {Authorization: '%token%'}).respond({name: 'First Last'});
+    xhr.flush();
+    expect($auth.User).toBeDefined();
+    expect($auth.User.name).toEqual('First Last');
+  });
+});
+
+describe('$authXhr', function() {
+  var $authXhr, xhr, token = '@token';
+
+  beforeEach(function() {
+    var scope = angular.scope();
+    xhr = scope.$service('$browser').xhr;
+    xhr.expectGET(SERVICE_AUTH).respond({token: token, user: '/user-url'});
+    xhr.expectGET('/user-url').respond({});
+    $authXhr = scope.$service('$authXhr');
+  });
+
+  it('should add Authorization header to every request', function() {
+    var response = {},
+        callback = jasmine.createSpy('callback');
+
+    xhr.expectGET('/url', null, {Authorization: token}).respond(response);
+    $authXhr('GET', '/url', callback);
+    xhr.flush();
+    expect(callback).toHaveBeenCalled();
+    expect(callback.argsForCall[0][1]).toBe(response);
   });
 });

@@ -9,7 +9,7 @@ describe('TicketListCtrl', function() {
   var ctrl, ticket1, ticket2, author1, author2;
 
   beforeEach(function() {
-    var scope = angular.scope();
+    var scope = createScopeWithMockAuth();
 
     ticket1 = {id: 't1', author: '/url-auth1'};
     ticket2 = {id: 't2', author: '/url-auth2'};
@@ -50,7 +50,7 @@ describe('ProjectListCtrl', function() {
   var ctrl, ticket1, ticket2, author1, author2;
 
   beforeEach(function() {
-    var scope = angular.scope();
+    var scope = createScopeWithMockAuth();
 
     project1 = {name: 'p1', description: '....'};
     project2 = {name: 'p2', description: '...'};

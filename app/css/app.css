@@ -41,6 +41,15 @@ h1, h2 {
   text-shadow:#909090 1.5px 1.5px 1.5px;
 }
 
+#header .auth-info {
+  float: right;
+  margin: 38px 5px 0 0;
+}
+
+#header .auth-info span {
+  font-weight: bold;
+}
+
 #footer {
   height: 30px;
   padding-top: 30px;

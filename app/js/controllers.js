@@ -1,4 +1,17 @@
 /**
+ * MainCtrl
+ *
+ * Exposes $auth service so that we can display current user
+ *
+ * @param {object} $auth AUTH service
+ */
+function MainCtrl($auth) {
+  this.$auth = $auth;
+}
+
+MainCtrl.$inject = ['$auth'];
+
+/**
  * TicketListCtrl
  *
  * Just loads all tickets immediately...

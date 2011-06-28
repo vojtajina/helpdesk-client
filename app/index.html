@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns:ng="http://angularjs.org/">
+<html xmlns:ng="http://angularjs.org/" ng:controller="MainCtrl">
 <head>
   <meta charset="utf-8" />
   <title>Helpdesk App</title>
@@ -8,7 +8,8 @@
 <body>
   <div id="main">
     <div id="header">
-    <h1>Helpdesk Client</h1>
+      <span ng:show="$auth.User" class="auth-info">Signed as {{$auth.User.email}}</span>
+      <h1>Helpdesk Client</h1>
     </div>
   
     <div id="content" ng:show="true" style="display:none">

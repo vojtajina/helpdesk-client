@@ -44,10 +44,12 @@ h1, h2 {
 #header .auth-info {
   float: right;
   margin: 38px 5px 0 0;
+  font-weight: bold;
 }
 
-#header .auth-info span {
-  font-weight: bold;
+#header .auth-info a {
+  color: #FFF;
+  font-weight: normal;
 }
 
 #footer {

@@ -8,7 +8,7 @@
 <body ng:show="true" style="display: none;">
   <div id="main">
     <div id="header">
-      <span ng:show="$auth.User" class="auth-info">Signed as {{$auth.User.email}}</span>
+      <span ng:show="$auth.User" class="auth-info">{{$auth.User.email}} | <a ng:href="{{$auth.signout}}">sign out</a></span>
       <h1>Helpdesk Client</h1>
     </div>
   

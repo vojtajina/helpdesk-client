@@ -68,6 +68,24 @@ describe('TicketListCtrl', function() {
     expect(ctrl.tickets.items[0].Author).toBe(author1);
     expect(ctrl.tickets.items[1].Author).toBe(author2);
   });
+
+  it('should set author of new ticket', function() {
+    spyOn(ctrl.tickets, 'create');
+    ctrl.$service('$auth').user = '/new-user/url';
+    ctrl.$eval();
+    ctrl.createTicket();
+
+    expect(ctrl.tickets.create).toHaveBeenCalled();
+    expect(ctrl.tickets.create.argsForCall[0][0].author).toEqual('/new-user/url');
+  });
+
+  it('should reset ticket after creating', function() {
+    spyOn(ctrl.tickets, 'create');
+    ctrl.newTicket.description = 'whatever';
+    ctrl.createTicket();
+
+    expect(ctrl.newTicket.description).toEqual('');
+  });
 });
 
 describe('ProjectListCtrl', function() {
@@ -99,5 +117,15 @@ describe('ProjectListCtrl', function() {
     expect(ctrl.projects.items[0].description).toEqual(project1.description);
     expect(ctrl.projects.items[1].name).toEqual(project2.name);
     expect(ctrl.projects.items[1].description).toEqual(project2.description);
+  });
+
+  it('should reset project after creating', function() {
+    spyOn(ctrl.projects, 'create');
+    ctrl.newProject.description = 'whatever';
+    ctrl.newProject.name = 'fake';
+    ctrl.createProject();
+
+    expect(ctrl.newProject.name).toEqual('');
+    expect(ctrl.newProject.description).toEqual('');
   });
 });

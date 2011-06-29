@@ -30,32 +30,33 @@ MainCtrl.$inject = ['$auth'];
  * @param {Object} $api API service
  * @param {Object} $resource RESOURCE service
  */
-function TicketListCtrl($api, $resource) {
+function TicketListCtrl($auth, $api, $resource) {
   var self = this;
 
   $api('tickets', function(ticketsUrl) {
     self.tickets = $resource(ticketsUrl, 'application/vnd.helpdesk.ticket+json', {author: ResourceCollection.RELATION.ONE});
   });
 
+  this.$auth = $auth;
   this.resetNewTicket();
 }
 
 TicketListCtrl.prototype = {
   createTicket: function() {
+    this.newTicket.author = this.$auth.user;
     this.tickets.create(this.newTicket);
     this.resetNewTicket();
   },
 
   resetNewTicket: function() {
     this.newTicket = {
-      author: '/api/v1/user/agdjY2MwMjExchILEgpVc2VyRW50aXR5GKm6BAw',
-      project: '/api/v1/project/agdjY2MwMjExchULEg1Qcm9qZWN0RW50aXR5GMKyBAw',
-      description: ''
+      description: '',
+      project: '/api/v1/project/93001'
     };
   }
 };
 
-TicketListCtrl.$inject = ['$api', '$resource'];
+TicketListCtrl.$inject = ['$auth', '$api', '$resource'];
 
 /**
  * ProjectListCtrl
@@ -71,6 +72,8 @@ function ProjectListCtrl($api, $resource) {
   $api('projects', function(projectsUrl) {
     self.projects = $resource(projectsUrl, 'application/vnd.helpdesk.project+json');
   });
+
+  this.resetNewProject();
 }
 
 ProjectListCtrl.prototype = {

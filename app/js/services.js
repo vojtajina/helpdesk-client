@@ -95,6 +95,7 @@ ResourceCollection.prototype = {
     var self = this;
     angular.forEach(this.items_, function(url, i) {
       self.$xhr('GET', url, function(code, resource) {
+        resource.url = url;
         self.loadRelations(resource);
         self.items[i] = resource;
       });
@@ -110,6 +111,7 @@ ResourceCollection.prototype = {
     angular.forEach(this.relations_, function(type, name) {
       if (type == ResourceCollection.RELATION.ONE) {
         self.$xhr('GET', resource[name], function(code, relation) {
+          relation.url = resource[name];
           resource[ucfirst(name)] = relation;
         });
       } else if (type == ResourceCollection.RELATION.MANY) {
@@ -155,14 +157,13 @@ ResourceCollection.prototype = {
    * @param {Object} resource
    */
   destroy: function(resource) {
-    var self = this,
-        url = resource.link;
+    var self = this;
 
-    this.$xhr('DELETE', url, function(code, response, headers) {
+    this.$xhr('DELETE', resource.url, function(code, response, headers) {
       var i = self.countTotal();
 
       while (i--) {
-        if (self.items_[i] == url) break;
+        if (self.items_[i] == resource.url) break;
       }
 
       self.items.splice(i, 1);

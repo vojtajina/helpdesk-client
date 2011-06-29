@@ -63,6 +63,16 @@ describe('$resource', function() {
     expect(rc.items[2].id).toEqual('3');
   });
 
+  it('should set url to each resource', function() {
+    expectItems(['/one']);
+    xhr.expectGET('/one').respond({id: '1'});
+
+    var rc = scope.$service('$resource')('/url');
+    xhr.flush();
+
+    expect(rc.items[0].url).toEqual('/one');
+  });
+
   it('countTotal() should return number of resources even before details are loaded', function() {
     expectItems(['/first', '/second', '/third']);
 
@@ -82,6 +92,17 @@ describe('$resource', function() {
     xhr.flush();
 
     expect(rc.items[0].Relation.id).toEqual('relation');
+  });
+
+  it('should set url for 1-1 relations', function() {
+    expectItems(['/first']);
+    xhr.expectGET('/first').respond({id: '1', relation: '/rel-url'});
+    xhr.expectGET('/rel-url').respond({id: 'relation'});
+
+    var rc = scope.$service('$resource')('/url', null, {relation: ResourceCollection.RELATION.ONE});
+    xhr.flush();
+
+    expect(rc.items[0].Relation.url).toEqual('/rel-url');
   });
 
   it('should create collections for 1-n relations', function() {
@@ -123,15 +144,17 @@ describe('$resource', function() {
 
   describe('destroy', function() {
     it('should send DELETE request and remove local item', function() {
-      var resource = {link: '/first-url', other: 'field'};
-      expectItems([resource.link, '/second-url']);
-      xhr.expectGET(resource.link).respond(resource);
-      xhr.expectGET('/second-url').respond({id: '2', link: '/second-url'});
+      var resUrl = '/first-url',
+          resource = {other: 'field'};
+
+      expectItems([resUrl, '/second-url']);
+      xhr.expectGET(resUrl).respond(resource);
+      xhr.expectGET('/second-url').respond({id: '2'});
 
       var rc = scope.$service('$resource')('/url', 'application/vnd.helpdesk.ticket+json');
       xhr.flush();
 
-      xhr.expectDELETE(resource.link).respond({});
+      xhr.expectDELETE(resUrl).respond({});
       rc.destroy(resource);
       xhr.flush();
 

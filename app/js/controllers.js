@@ -34,7 +34,9 @@ function TicketListCtrl($auth, $api, $resource) {
   var self = this;
 
   $api('tickets', function(ticketsUrl) {
-    self.tickets = $resource(ticketsUrl, 'application/vnd.helpdesk.ticket+json', {author: ResourceCollection.RELATION.ONE});
+ // TODO(vojta): remove temporary hack when implemented on service
+    // Content-Type should be application/vnd.helpdesk.ticket+json
+    self.tickets = $resource(ticketsUrl, 'application/json', {author: ResourceCollection.RELATION.ONE});
   });
 
   this.$auth = $auth;
@@ -70,7 +72,9 @@ function ProjectListCtrl($api, $resource) {
   var self = this;
 
   $api('projects', function(projectsUrl) {
-    self.projects = $resource(projectsUrl, 'application/vnd.helpdesk.project+json');
+    // TODO(vojta): remove temporary hack when implemented on service
+    // Content-Type should be application/vnd.helpdesk.project+json
+    self.projects = $resource(projectsUrl, 'application/json');
   });
 
   this.resetNewProject();

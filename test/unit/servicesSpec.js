@@ -165,23 +165,45 @@ describe('$resource', function() {
 
   describe('destroy', function() {
     it('should send DELETE request and remove local item', function() {
-      var resUrl = '/first-url',
-          resource = {other: 'field'};
+      var res1 = {other: 'field', url: '/url1'},
+          res2 = {id: 'res2', url: '/url2'},
+          res3 = {id: 'res3', url: '/url3'};
 
-      expectItems([resUrl, '/second-url']);
-      xhr.expectGET(resUrl).respond(resource);
-      xhr.expectGET('/second-url').respond({id: '2'});
+      expectItems([res1.url, res2.url, res3.url]);
+      xhr.expectGET(res1.url).respond(res1);
+      xhr.expectGET(res2.url).respond(res2);
+      xhr.expectGET(res3.url).respond(res3);
 
       var rc = scope.$service('$resource')('/url', 'application/vnd.helpdesk.ticket+json');
       xhr.flush();
 
-      xhr.expectDELETE(resUrl).respond({});
-      rc.destroy(resource);
+      // delete res2
+      xhr.expectDELETE(res2.url).respond({});
+      rc.destroy(res2);
+      xhr.flush();
+
+      expect(rc.countTotal()).toBe(2);
+      expect(rc.items_).not.toContain(res2.url);
+      expect(rc.items_).toContain(res1.url);
+      expect(rc.items_).toContain(res3.url);
+
+      expect(rc.items).not.toContain(res2);
+      expect(rc.items).toContain(res1);
+      expect(rc.items).toContain(res3);
+
+      // delete res1
+      xhr.expectDELETE(res1.url).respond({});
+      rc.destroy(res1);
       xhr.flush();
 
       expect(rc.countTotal()).toBe(1);
-      expect(rc.items_).not.toContain('/first-url');
-      expect(rc.items).not.toContain(resource);
+      expect(rc.items_).not.toContain(res1.url);
+      expect(rc.items_).not.toContain(res2.url);
+      expect(rc.items_).toContain(res3.url);
+
+      expect(rc.items).not.toContain(res1);
+      expect(rc.items).not.toContain(res2);
+      expect(rc.items).toContain(res3);
     });
   });
 });

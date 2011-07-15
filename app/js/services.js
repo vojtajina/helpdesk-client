@@ -141,6 +141,7 @@ ResourceCollection.prototype = {
       var url = pathFromUrl(headers('Location')),
           i = self.items_.push(url) - 1;
 
+      resourceFromServer.url = url;
       self.loadRelations(resourceFromServer);
       self.items[i] = resourceFromServer;
     }, {'Content-Type': this.contentType});

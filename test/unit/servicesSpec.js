@@ -139,6 +139,28 @@ describe('$resource', function() {
       expect(rc.items.pop().id).toEqual('from-server');
       expect(rc.loadRelations).toHaveBeenCalled();
     });
+
+    it('should set url property to resource from server', function() {
+      expectItems(['/first']);
+      xhr.expectGET('/first').respond({id: '1'});
+
+      var rc = scope.$service('$resource')('/url', 'application/vnd.helpdesk.ticket+json');
+      xhr.flush();
+
+      var resourceNew = {id: 'new'};
+      var resourceFromServer = {id: 'from-server'};
+
+      xhr.expectPOST('/url', resourceNew, {'Content-Type': 'application/vnd.helpdesk.ticket+json'}).respond(resourceFromServer);
+      spyOn(rc, 'loadRelations');
+
+      rc.create(resourceNew);
+      xhr.flush();
+
+      var res = rc.items.pop();
+      expect(rc.countTotal()).toBe(2);
+      expect(res.id).toEqual('from-server');
+      expect(res.url).toEqual('fake-header');
+    });
   });
 
   describe('destroy', function() {

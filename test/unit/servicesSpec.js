@@ -130,7 +130,6 @@ describe('$resource', function() {
       var resourceFromServer = {id: 'from-server'};
 
       xhr.expectPOST('/url', resourceNew, {'Content-Type': 'application/vnd.helpdesk.ticket+json'}).respond(resourceFromServer);
-      xhr.expectGET('fake-header').respond(resourceFromServer);
       spyOn(rc, 'loadRelations');
 
       rc.create(resourceNew);

@@ -141,12 +141,8 @@ ResourceCollection.prototype = {
       var url = pathFromUrl(headers('Location')),
           i = self.items_.push(url) - 1;
 
-      // do request detail
-      // TODO(vojta) remove when implemented on service
-      self.$xhr('GET', url, function(code, resource) {
-        self.loadRelations(resource);
-        self.items[i] = resource;
-      });
+      self.loadRelations(resourceFromServer);
+      self.items[i] = resourceFromServer;
     }, {'Content-Type': this.contentType});
   },
 

@@ -11,8 +11,8 @@ function MainCtrl($route, $auth, $location) {
 
   $route.parent(scope);
   $route.when('!/intro',    {controller: IntroCtrl, template: 'partials/intro.html', title: 'Intro'});
-  $route.when('!/tickets',  {controller: TicketListCtrl, template: 'partials/tickets.html', title: 'Tickets'});
-  $route.when('!/projects', {controller: ProjectListCtrl, template: 'partials/projects.html', title: 'Projects'});
+  $route.when('!/tickets',  {controller: TicketsCtrl, template: 'partials/tickets.html', title: 'Tickets'});
+  $route.when('!/projects', {controller: ProjectsCtrl, template: 'partials/projects.html', title: 'Projects'});
   $route.otherwise({redirectTo: '!/intro'});
 
   $route.onChange(function(a, b) {
@@ -44,14 +44,14 @@ MainCtrl.prototype = {
 MainCtrl.$inject = ['$route', '$auth', '$location'];
 
 /**
- * TicketListCtrl
+ * TicketsCtrl
  *
  * Just loads all tickets immediately...
  *
  * @param {Object} $api API service
  * @param {Object} $resource RESOURCE service
  */
-function TicketListCtrl($auth, $api, $resource) {
+function TicketsCtrl($auth, $api, $resource) {
   var self = this;
 
   $api('tickets', function(ticketsUrl) {
@@ -64,7 +64,7 @@ function TicketListCtrl($auth, $api, $resource) {
   this.resetNewTicket();
 }
 
-TicketListCtrl.prototype = {
+TicketsCtrl.prototype = {
   createTicket: function() {
     this.newTicket.author = this.$auth.user;
     this.tickets.create(this.newTicket);
@@ -79,17 +79,17 @@ TicketListCtrl.prototype = {
   }
 };
 
-TicketListCtrl.$inject = ['$auth', '$api', '$resource'];
+TicketsCtrl.$inject = ['$auth', '$api', '$resource'];
 
 /**
- * ProjectListCtrl
+ * ProjectsCtrl
  *
  * Loads all projects immediately
  *
  * @param {Object} $api API service
  * @param {Object} $resource RESOURCE service
  */
-function ProjectListCtrl($api, $resource) {
+function ProjectsCtrl($api, $resource) {
   var self = this;
 
   $api('projects', function(projectsUrl) {
@@ -101,7 +101,7 @@ function ProjectListCtrl($api, $resource) {
   this.resetNewProject();
 }
 
-ProjectListCtrl.prototype = {
+ProjectsCtrl.prototype = {
   createProject: function() {
     this.projects.create(this.newProject);
     this.resetNewProject();
@@ -115,6 +115,6 @@ ProjectListCtrl.prototype = {
   }
 };
 
-ProjectListCtrl.$inject = ['$api', '$resource'];
+ProjectsCtrl.$inject = ['$api', '$resource'];
 
 function IntroCtrl() {}

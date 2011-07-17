@@ -47,7 +47,7 @@ describe('MainCtrl', function() {
  * ? Script for fetching / updating latest API from real service, so we can do integration test
  * with the REST service whenever it changes
  */
-describe('TicketListCtrl', function() {
+describe('TicketsCtrl', function() {
   var ctrl, ticket1, ticket2, author1, author2;
 
   beforeEach(function() {
@@ -66,7 +66,7 @@ describe('TicketListCtrl', function() {
     xhr.expectGET('/url-auth1').respond(author1);
     xhr.expectGET('/url-auth2').respond(author2);
 
-    ctrl = scope.$new(TicketListCtrl);
+    ctrl = scope.$new(TicketsCtrl);
     xhr.flush();
   });
 
@@ -106,7 +106,7 @@ describe('TicketListCtrl', function() {
   });
 });
 
-describe('ProjectListCtrl', function() {
+describe('ProjectsCtrl', function() {
   var ctrl, ticket1, ticket2, author1, author2;
 
   beforeEach(function() {
@@ -121,7 +121,7 @@ describe('ProjectListCtrl', function() {
     xhr.expectGET('/prj1').respond(project1);
     xhr.expectGET('/prj2').respond(project2);
 
-    ctrl = scope.$new(ProjectListCtrl);
+    ctrl = scope.$new(ProjectsCtrl);
     xhr.flush();
   });
 

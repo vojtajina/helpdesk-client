@@ -161,6 +161,23 @@ describe('$resource', function() {
       expect(res.id).toEqual('from-server');
       expect(res.url).toEqual('fake-header');
     });
+
+    it('should call optional done callback', function() {
+      expectItems([]);
+
+      var rc = scope.$service('$resource')('/url'),
+          resourceNew = {id: 'new'},
+          callback = jasmine.createSpy('done');
+
+      xhr.flush();
+      xhr.expectPOST('/url', resourceNew).respond({});
+      spyOn(rc, 'loadRelations');
+
+      rc.create(resourceNew, callback);
+      xhr.flush();
+
+      expect(callback).toHaveBeenCalledOnce();
+    });
   });
 
   describe('destroy', function() {
@@ -221,7 +238,27 @@ describe('$resource', function() {
       var rc = new ResourceCollection(scope.$service('$xhr'), '/url');
       expect(rc.countTotal()).toBe(0);
     });
+  });
 
+  describe('reload', function() {
+    it('should reload given resource by its url', function() {
+      var res1 = {id: 'res1', url: '/url1'},
+          res2 = {id: 'res2', url: '/url2'};
+
+      expectItems([res1.url, res2.url]);
+      xhr.expectGET(res1.url).respond(res1);
+      xhr.expectGET(res2.url).respond(res2);
+
+      var rc = scope.$service('$resource')('/url');
+      xhr.flush();
+
+      xhr.expectGET(res1.url).respond({id: 'new-id', isNew: true});
+      rc.reload(res1.url);
+      xhr.flush();
+
+      expect(rc.items[0].id).toEqual('new-id');
+      expect(rc.items[0].isNew).toBe(true);
+    });
   });
 });
 

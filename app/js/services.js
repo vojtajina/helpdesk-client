@@ -61,6 +61,8 @@ angular.service('$resource', function($xhr) {
  * multiple ResourceCollections would use this one ResourceCollection just for creating ?
  * This ResourceCollection would not load any data (even no index) ???
  *
+ * TODO(vojta) add optional continuation parameter to all async methods
+ *
  * @param {Object} $xhr Angular's $xhr service
  * @param {string} url Url of the collection
  * @param {boolean=} autoload Should auto load details of all resources ?
@@ -142,8 +144,9 @@ ResourceCollection.prototype = {
    * Sends POST request to server and adds response into collection
    *
    * @param {Object} resource
+   * @param {Function=} done Optional callback when operation finished
    */
-  create: function(resource) {
+  create: function(resource, done) {
     var self = this;
     this.$xhr('POST', this.url, resource, function(code, resourceFromServer, headers) {
       var url = pathFromUrl(headers('Location')),
@@ -152,12 +155,15 @@ ResourceCollection.prototype = {
       resourceFromServer.url = url;
       self.loadRelations(resourceFromServer);
       self.items[i] = resourceFromServer;
+      if (done) done();
     }, {'Content-Type': this.contentType});
   },
 
   /**
    * Delete given resource
    * Sends DELETE request to server and remove from local collection
+   *
+   * TODO(vojta): should throw when resource doesn't exist ?
    *
    * @param {Object} resource
    */
@@ -173,6 +179,22 @@ ResourceCollection.prototype = {
 
       self.items.splice(i, 1);
       self.items_.splice(i, 1);
+    });
+  },
+
+  reload: function(url) {
+    var self = this;
+
+    this.$xhr('GET', url, function(code, response, headers) {
+      var i = self.countTotal();
+
+      while(i--)
+        if (self.items_[i] == url) break;
+
+      // TODO(vojta): relations ?
+      // add param to say whether we want to reload relations as well
+      // by default reload only if change ???
+      angular.extend(self.items[i], response);
     });
   }
 };

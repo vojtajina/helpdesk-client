@@ -93,7 +93,11 @@ TicketsCtrl.prototype = {
 
     // TODO(vojta): remove this ugly hack when better way available
     ticket.Revisions.url = this.revUrl;
-    ticket.Revisions.create(revision);
+
+    var tickets = this.tickets;
+    ticket.Revisions.create(revision, function() {
+      tickets.reload(ticket.url);
+    });
 
     // reset
     revision.comment = '';

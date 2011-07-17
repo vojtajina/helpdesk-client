@@ -3,7 +3,7 @@
   <h2>Create New Ticket</h2>
   <div ng:show="showForm">
     <textarea name="newTicket.description"></textarea>
-    <button disabled="{{!isAuth()}}" ng:click="createTicket()">CREATE</button>
+    <button ng:disabled="{{!isAuth()}}" ng:click="createTicket()">CREATE</button>
   </div>
 </div>
 

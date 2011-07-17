@@ -57,14 +57,21 @@
 
 
 /**
+ * @workInProgress
  * @ngdoc overview
  * @name angular.mock
- * @namespace Namespace for all built-in angular mocks.
- *
  * @description
- * `angular.mock` is a namespace for all built-in mocks that ship with angular and automatically
- * replace real services if `angular-mocks.js` file is loaded after `angular.js` and before any
- * tests.
+ *
+ * The `angular.mock` object is a namespace for all built-in mock services that ship with angular.
+ * It automatically replaces real services if the `angular-mocks.js` file is loaded after
+ * `angular.js` and before any tests.
+ *
+ * Built-in mocks:
+ *
+ * * {@link angular.mock.service.$browser $browser } - A mock implementation of the browser.
+ * * {@link angular.mock.service.$exceptionHandler $exceptionHandler } - A mock implementation of the
+ * angular service exception handler.
+ * * {@link angular.mock.service.$log $log } - A mock implementation of the angular service log.
  */
 angular.mock = {};
 
@@ -154,12 +161,19 @@ function MockBrowser() {
   self.lastCookieHash = {};
   self.deferredFns = [];
 
-  self.defer = function(fn) {
-    self.deferredFns.push(fn);
+  self.defer = function(fn, delay) {
+    delay = delay || 0;
+    self.deferredFns.push({time:(self.defer.now + delay), fn:fn});
+    self.deferredFns.sort(function(a,b){ return a.time - b.time;});
   };
 
-  self.defer.flush = function() {
-    while (self.deferredFns.length) self.deferredFns.shift()();
+  self.defer.now = 0;
+
+  self.defer.flush = function(time) {
+    self.defer.now += (time || 0);
+    while (self.deferredFns.length && self.deferredFns[0].time <= self.defer.now) {
+      self.deferredFns.shift().fn();
+    }
   };
 }
 MockBrowser.prototype = {
@@ -203,7 +217,9 @@ MockBrowser.prototype = {
       }
       return this.cookieHash;
     }
-  }
+  },
+
+  addJs: function(){}
 };
 
 angular.service('$browser', function(){
@@ -223,7 +239,7 @@ angular.service('$browser', function(){
  *
  * See {@link angular.mock} for more info on angular mocks.
  */
-angular.service('$exceptionHandler', function(e) {
+angular.service('$exceptionHandler', function() {
   return function(e) {throw e;};
 });
 
@@ -369,9 +385,12 @@ function TzDate(offset, timestamp) {
     return this.origDate.getUTCSeconds();
   };
 
+  this.getDay = function() {
+    return this.origDate.getDay();
+  };
 
   //hide all methods not implemented in this mock that the Date prototype exposes
-  var unimplementedMethods = ['getDay', 'getMilliseconds', 'getTime', 'getUTCDay',
+  var unimplementedMethods = ['getMilliseconds', 'getTime', 'getUTCDay',
       'getUTCMilliseconds', 'getYear', 'setDate', 'setFullYear', 'setHours', 'setMilliseconds',
       'setMinutes', 'setMonth', 'setSeconds', 'setTime', 'setUTCDate', 'setUTCFullYear',
       'setUTCHours', 'setUTCMilliseconds', 'setUTCMinutes', 'setUTCMonth', 'setUTCSeconds',

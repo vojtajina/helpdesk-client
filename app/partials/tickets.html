@@ -1,4 +1,4 @@
-<div class="ticket new">
+<div class="ticket new-form">
   <a href ng:click="showForm = !showForm" class="right">toggle</a>
   <h2>Create New Ticket</h2>
   <div ng:show="showForm">
@@ -13,17 +13,33 @@
     <li ng:repeat="ticket in tickets.items" ng:class="ticket.state.toLowerCase()">
       <span class="ticket-state" ng:class="ticket.state.toLowerCase()">{{ticket.state}}</span>
       <span class="ticket-number">#{{ticket.number}}</span> by <span class="ticket-author">{{ticket.Author|userInfo}}</span> at <span class="ticket-created">{{ticket.created | gmtdate: 'd.M.yyyy HH:mm:ss'}}</span><br />
-      
+
       <p class="ticket-description">{{ticket.description}}</p>
-      <a href ng:click="tickets.destroy(ticket)" class="right">delete</a>
-      
-      <span ng:show="!ticket.Comments.items.lenght">No comments</span>
-      <a href ng:click="ticket.Comments.loadDetails()" ng:show="ticket.Comments.items.lenght">Comments: {{ticket.Comments.items.length}}</a>
-      <ul>
-        <li ng:repeat="comment in ticket.Comments.data">
-          {{comment.created | gmtdate: 'd.M.yyyy HH:mm:ss'}}: {{comment.text}}
-        </li>
-      </ul>
+
+      <!-- revisions -->
+      <div ng:show="revLoaded">
+        <h4>Ticket History</h4>
+        <ul>
+          <li ng:repeat="revision in ticket.Revisions.items">
+            <b>[{{revision.state}}]</b> {{revision.comment}}
+          </li>
+        </ul>
+      </div>
+
+      <!-- new revision -->
+      <div class="ticket-revision new-form" ng:show="showNewRevForm" ng:init="newRev = {state: ticket.state}">
+        <label for="new-rev-comment">Comment:</label> <input type="text" name="newRev.comment" id="new-rev-comment" /> 
+        <select name="newRev.state"><option ng:repeat="state in STATES" value="{{state}}">{{state}}</option></select>
+        <button ng:click="createRevision(newRev, ticket)">ADD</button>
+      </div>
+            
+      <!-- ticket actions -->
+      <div class="ticket-actions">
+        <a href ng:click="showNewRevForm = !showNewRevForm">add revision</a> | 
+        <span ng:show="!revLoaded"><a href ng:click="ticket.Revisions.loadDetails(); revLoaded = true;">load revisions</a> ({{ticket.Revisions.countTotal()}}) | </span>
+        <a href ng:click="tickets.destroy(ticket)">delete ticket</a>
+      </div>
+      <div class="wrapper"></div>
     </li>
   </ul>
 </div>

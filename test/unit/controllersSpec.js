@@ -48,15 +48,16 @@ describe('MainCtrl', function() {
  * with the REST service whenever it changes
  */
 describe('TicketsCtrl', function() {
-  var ctrl, ticket1, ticket2, author1, author2;
+  var scope, ctrl, ticket1, ticket2, author1, author2, revisions1;
 
   beforeEach(function() {
-    var scope = createScopeWithMockAuth();
+    scope = createScopeWithMockAuth();
 
-    ticket1 = {id: 't1', author: '/url-auth1'};
+    ticket1 = {id: 't1', author: '/url-auth1', revisions: '/url-rev1'};
     ticket2 = {id: 't2', author: '/url-auth2'};
     author1 = {};
     author2 = {};
+    revisions1 = ['/rev1', '/rev2'];
 
     var xhr = scope.$service('$browser').xhr;
     xhr.expectGET(SERVICE_URL).respond({tickets: '/ticket-url'});
@@ -65,6 +66,7 @@ describe('TicketsCtrl', function() {
     xhr.expectGET('/url2').respond(ticket2);
     xhr.expectGET('/url-auth1').respond(author1);
     xhr.expectGET('/url-auth2').respond(author2);
+    xhr.expectGET('/url-rev1').respond({items: revisions1});
 
     ctrl = scope.$new(TicketsCtrl);
     xhr.flush();
@@ -103,6 +105,28 @@ describe('TicketsCtrl', function() {
     ctrl.createTicket();
 
     expect(ctrl.newTicket.description).toEqual('');
+  });
+
+  it('should auto load ticket revisions index but not details', function() {
+    var ticket = ctrl.tickets.items[0];
+    expect(ticket.Revisions instanceof ResourceCollection).toBe(true);
+    expect(ticket.Revisions.countTotal()).toBe(2);
+    expect(ticket.Revisions.items.length).toBe(0);
+  });
+
+  describe('createRevision', function() {
+    it('should set author and ticket url', function() {
+      var ticket = ctrl.tickets.items[0],
+          $auth = scope.$service('$auth');
+
+      spyOn(ticket.Revisions, 'create');
+      ctrl.createRevision({comment: 'c', state: 's'}, ticket);
+      expect(ticket.Revisions.create).toHaveBeenCalledOnce();
+
+      var arg = ticket.Revisions.create.argsForCall[0][0];
+      expect(arg.author).toEqual($auth.user);
+      expect(arg.ticket).toEqual(ticket.url);
+    });
   });
 });
 

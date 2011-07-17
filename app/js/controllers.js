@@ -55,10 +55,18 @@ MainCtrl.$inject = ['$route', '$auth', '$location'];
 function TicketsCtrl($auth, $api, $resource) {
   var self = this;
 
+  this.STATES = 'new,assigned,pending,resolved,explain,closed'.toUpperCase().split(',');
+
   $api('tickets', function(ticketsUrl) {
  // TODO(vojta): remove temporary hack when implemented on service
     // Content-Type should be application/vnd.helpdesk.ticket+json
-    self.tickets = $resource(ticketsUrl, 'application/json', {author: ResourceCollection.RELATION.ONE});
+    self.tickets = $resource(ticketsUrl, 'application/json', {
+      author: ResourceCollection.RELATION.ONE,
+      revisions: ResourceCollection.RELATION.MANY});
+  });
+
+  $api('ticket-revisions', function(revisionsUrl) {
+    self.revUrl = revisionsUrl;
   });
 
   this.$auth = $auth;
@@ -77,6 +85,18 @@ TicketsCtrl.prototype = {
       description: '',
       project: '/api/v1/project/93001'
     };
+  },
+
+  createRevision: function(revision, ticket) {
+    revision.author = this.$auth.user;
+    revision.ticket = ticket.url;
+
+    // TODO(vojta): remove this ugly hack when better way available
+    ticket.Revisions.url = this.revUrl;
+    ticket.Revisions.create(revision);
+
+    // reset
+    revision.comment = '';
   }
 };
 

@@ -32,6 +32,11 @@ a:hover {
   float: right;
 }
 
+.wrapper {
+  width: 100%;
+  clear: both;
+}
+
 
 /* MAIN LAYOUT */
 
@@ -101,7 +106,7 @@ a:hover {
 
 /* PROJECTS */
 
-.project.new input {
+.project.new-form input {
   width: 693px;
   margin-bottom: 5px;
 }
@@ -144,16 +149,29 @@ a:hover {
   border: solid 1px #3079ED;
 }
 
+.ticket-revision.new-form input {
+  width: 452px; 
+}
+
+.ticket-revision.new-form button, .ticket-revision.new-form select {
+  width: 100px;
+}
+
+.ticket-actions {
+  float: right;
+  margin-top: 5px;
+}
+
 
 /* PROJECTS, TICKETS shared */
 
-.new textarea {
+.new-form textarea {
   float: left;
   width: 594px;
   height: 48px;
 }
 
-.new button {
+.project.new-form button, .ticket.new-form button {
   margin-left: 10px;
   width: 130px;
   height: 54px;

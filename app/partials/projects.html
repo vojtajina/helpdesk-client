@@ -1,4 +1,4 @@
-<div class="project new">
+<div class="project new-form">
   <a href ng:click="showForm = !showForm" class="right">toggle</a>
   <h2>Create New Project</h2>
   <div ng:show="showForm">
@@ -14,7 +14,8 @@
     <li ng:repeat="project in projects.items">
       <h3>{{project.name}}</h3>
       <p>{{project.description}}</p>
-      <a href ng:click="projects.destroy(project)" class="right">delete</a><br />
+      <a href ng:click="projects.destroy(project)" class="right">delete</a>
+      <div class="wrapper"></div>
     </li>
   </ul>
 </div>

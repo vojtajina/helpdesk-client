@@ -5,8 +5,29 @@
  *
  * @param {object} $auth AUTH service
  */
-function MainCtrl($auth) {
-  this.$auth = $auth;
+function MainCtrl($route, $auth, $location) {
+  var scope = this;
+  scope.$auth = $auth;
+
+  $route.parent(scope);
+  $route.when('!/intro',    {controller: IntroCtrl, template: 'partials/intro.html', title: 'Intro'});
+  $route.when('!/tickets',  {controller: TicketListCtrl, template: 'partials/tickets.html', title: 'Tickets'});
+  $route.when('!/projects', {controller: ProjectListCtrl, template: 'partials/projects.html', title: 'Projects'});
+  $route.otherwise({redirectTo: '!/intro'});
+
+  $route.onChange(function(a, b) {
+    scope.title = $route.current.title;
+  });
+
+  /**
+   * Is given link active ?
+   *
+   * @param {string} link
+   * @returns {string} CSS class
+   */
+  this.activeCls = function(link) {
+    return $location.hashPath.substr(2) == link ? 'active' : '';
+  };
 }
 
 MainCtrl.prototype = {
@@ -20,7 +41,7 @@ MainCtrl.prototype = {
   }
 };
 
-MainCtrl.$inject = ['$auth'];
+MainCtrl.$inject = ['$route', '$auth', '$location'];
 
 /**
  * TicketListCtrl
@@ -95,3 +116,5 @@ ProjectListCtrl.prototype = {
 };
 
 ProjectListCtrl.$inject = ['$api', '$resource'];
+
+function IntroCtrl() {}

@@ -1,8 +1,8 @@
 describe('MainCtrl', function() {
-  var $auth, ctrl;
+  var $auth, ctrl, scope;
 
   beforeEach(function() {
-    var scope = createScopeWithMockAuth();
+    scope = createScopeWithMockAuth();
     $auth = scope.$service('$auth');
     ctrl = scope.$new(MainCtrl);
   });
@@ -18,6 +18,24 @@ describe('MainCtrl', function() {
     it('should return false when no active token', function() {
       $auth.token = 'token';
       expect(ctrl.isAuth()).toBe(true);
+    });
+  });
+
+  describe('activeCls', function() {
+    var $location;
+
+    beforeEach(function() {
+      $location = scope.$service('$location');
+    });
+
+    it('should return "active"', function() {
+      $location.hashPath = '!/link1';
+      expect(ctrl.activeCls('link1')).toEqual('active');
+    });
+
+    it('should retunr "" when not active', function() {
+      $location.hashPath = '!/link1';
+      expect(ctrl.activeCls('link2')).toEqual('');
     });
   });
 });

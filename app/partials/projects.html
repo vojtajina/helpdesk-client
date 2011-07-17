@@ -1,0 +1,17 @@
+<div class="project new">
+  <h2>Create New Project</h2>
+  <label for="new-prj-name">Name:</label> <input type="text" name="newProject.name" id="new-prj-name" />
+  <textarea name="newProject.description"></textarea>
+  <button disabled="{{!isAuth()}}" ng:click="createProject()">CREATE</button>
+</div>
+
+<div>
+  <h2>List of projects ({{projects.items.length}})</h2>
+  <ul class="project list">
+    <li ng:repeat="project in projects.items">
+      <h3>{{project.name}}</h3>
+      <p>{{project.description}}</p>
+      <a href ng:click="projects.destroy(project)" class="right">delete</a><br />
+    </li>
+  </ul>
+</div>

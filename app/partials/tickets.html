@@ -1,0 +1,26 @@
+<div class="ticket new">
+  <h2>Create New Ticket</h2>
+  <textarea name="newTicket.description"></textarea>
+  <button disabled="{{!isAuth()}}" ng:click="createTicket()">CREATE</button>
+</div>
+
+<div>
+  <h2>List of tickets ({{tickets.items.length}})</h2>
+  <ul class="ticket list">
+    <li ng:repeat="ticket in tickets.items" ng:class="ticket.state.toLowerCase()">
+      <span class="ticket-state" ng:class="ticket.state.toLowerCase()">{{ticket.state}}</span>
+      <span class="ticket-number">#{{ticket.number}}</span> by <span class="ticket-author">{{ticket.Author|userInfo}}</span> at <span class="ticket-created">{{ticket.created | gmtdate: 'd.M.yyyy HH:mm:ss'}}</span><br />
+      
+      <p class="ticket-description">{{ticket.description}}</p>
+      <a href ng:click="tickets.destroy(ticket)" class="right">delete</a>
+      
+      <span ng:show="!ticket.Comments.items.lenght">No comments</span>
+      <a href ng:click="ticket.Comments.loadDetails()" ng:show="ticket.Comments.items.lenght">Comments: {{ticket.Comments.items.length}}</a>
+      <ul>
+        <li ng:repeat="comment in ticket.Comments.data">
+          {{comment.created | gmtdate: 'd.M.yyyy HH:mm:ss'}}: {{comment.text}}
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

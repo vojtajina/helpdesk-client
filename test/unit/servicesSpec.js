@@ -206,6 +206,23 @@ describe('$resource', function() {
       expect(rc.items).toContain(res3);
     });
   });
+
+  describe('countTotal', function() {
+    it('should return number of items, even if details are not loaded', function() {
+      expectItems(['/first', '/second', '/third']);
+      var rc = new ResourceCollection(scope.$service('$xhr'), '/url');
+      xhr.flush();
+
+      expect(rc.countTotal()).toBe(3);
+    });
+
+    it('should return 0 even before index is loaded', function() {
+      expectItems([]);
+      var rc = new ResourceCollection(scope.$service('$xhr'), '/url');
+      expect(rc.countTotal()).toBe(0);
+    });
+
+  });
 });
 
 describe('$auth', function() {

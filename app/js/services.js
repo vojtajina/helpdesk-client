@@ -57,6 +57,10 @@ angular.service('$resource', function($xhr) {
  *
  * TODO(vojta) pagination
  *
+ * TODO(vojta) allow different url for post ? or special ResourceCollection for only creating,
+ * multiple ResourceCollections would use this one ResourceCollection just for creating ?
+ * This ResourceCollection would not load any data (even no index) ???
+ *
  * @param {Object} $xhr Angular's $xhr service
  * @param {string} url Url of the collection
  * @param {boolean=} autoload Should auto load details of all resources ?
@@ -67,10 +71,10 @@ angular.service('$resource', function($xhr) {
 function ResourceCollection($xhr, url, autoload, relations, contentType) {
   this.$xhr = $xhr;
   this.url = url;
-  this.relations_ = relations;
-  this.contentType = contentType;
-  this.items = [];
-  this.loadIndex(url, autoload);
+  this.relations_ = relations || {};
+  this.contentType = contentType || 'application/json';
+  this.items = this.items_ = [];
+  this.loadIndex(autoload);
 }
 
 ResourceCollection.prototype = {
@@ -109,13 +113,17 @@ ResourceCollection.prototype = {
   loadRelations: function(resource) {
     var self = this;
     angular.forEach(this.relations_, function(type, name) {
+      var relationUrl = resource[name];
+
+      if (!relationUrl) return;
       if (type == ResourceCollection.RELATION.ONE) {
-        self.$xhr('GET', resource[name], function(code, relation) {
-          relation.url = resource[name];
+        self.$xhr('GET', relationUrl, function(code, relation) {
+          relation.url = relationUrl;
           resource[ucfirst(name)] = relation;
         });
       } else if (type == ResourceCollection.RELATION.MANY) {
-        resource[ucfirst(name)] = new ResourceCollection(self.$xhr, resource[name]);
+        // TODO(vojta): this relation could have relations as well...
+        resource[ucfirst(name)] = new ResourceCollection(self.$xhr, relationUrl, false);
       }
     });
   },

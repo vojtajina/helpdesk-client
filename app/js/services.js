@@ -171,11 +171,7 @@ ResourceCollection.prototype = {
     var self = this;
 
     this.$xhr('DELETE', resource.url, function(code, response, headers) {
-      var i = self.countTotal();
-
-      while (i--) {
-        if (self.items_[i] == resource.url) break;
-      }
+      var i = self.getResourceIdxFromUrl(resource.url);
 
       self.items.splice(i, 1);
       self.items_.splice(i, 1);
@@ -184,18 +180,26 @@ ResourceCollection.prototype = {
 
   reload: function(url) {
     var self = this;
-
     this.$xhr('GET', url, function(code, response, headers) {
-      var i = self.countTotal();
-
-      while(i--)
-        if (self.items_[i] == url) break;
-
       // TODO(vojta): relations ?
       // add param to say whether we want to reload relations as well
       // by default reload only if change ???
-      angular.extend(self.items[i], response);
+      angular.extend(self.items[self.getResourceIdxFromUrl(url)], response);
     });
+  },
+
+  /**
+   * Return index of given resource url
+   *
+   * @private
+   * @param {string} url
+   */
+  getResourceIdxFromUrl: function(url) {
+    var i = this.countTotal();
+
+    while(i--) {
+      if (this.items_[i] == url) return i;
+    }
   }
 };
 

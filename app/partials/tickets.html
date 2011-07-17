@@ -1,7 +1,10 @@
 <div class="ticket new">
+  <a href ng:click="showForm = !showForm" class="right">toggle</a>
   <h2>Create New Ticket</h2>
-  <textarea name="newTicket.description"></textarea>
-  <button disabled="{{!isAuth()}}" ng:click="createTicket()">CREATE</button>
+  <div ng:show="showForm">
+    <textarea name="newTicket.description"></textarea>
+    <button disabled="{{!isAuth()}}" ng:click="createTicket()">CREATE</button>
+  </div>
 </div>
 
 <div>

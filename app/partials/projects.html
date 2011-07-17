@@ -1,8 +1,11 @@
 <div class="project new">
+  <a href ng:click="showForm = !showForm" class="right">toggle</a>
   <h2>Create New Project</h2>
-  <label for="new-prj-name">Name:</label> <input type="text" name="newProject.name" id="new-prj-name" />
-  <textarea name="newProject.description"></textarea>
-  <button disabled="{{!isAuth()}}" ng:click="createProject()">CREATE</button>
+  <div ng:show="showForm">
+    <label for="new-prj-name">Name:</label> <input type="text" name="newProject.name" id="new-prj-name" />
+    <textarea name="newProject.description"></textarea>
+    <button disabled="{{!isAuth()}}" ng:click="createProject()">CREATE</button>
+  </div>
 </div>
 
 <div>

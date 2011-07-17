@@ -8,6 +8,7 @@
 function MainCtrl($route, $auth, $location) {
   var scope = this;
   scope.$auth = $auth;
+  scope.showForm = true;
 
   $route.parent(scope);
   $route.when('!/intro',    {controller: IntroCtrl, template: 'partials/intro.html', title: 'Intro'});

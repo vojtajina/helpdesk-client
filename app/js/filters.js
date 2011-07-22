@@ -42,9 +42,7 @@ angular.filter('userInfo', function(user) {
  */
 angular.filter('textFormat', function(text) {
 	text = text.replace(/\n/mg, '<br />');
-	text = text.replace(/\*(.*?)\*/g, function(a, b) {
-		return '<b>' + b + '</b>';
-	});
+	text = text.replace(/\*([^\*]*)\*/g, '<b>\$1</b>');
 	
 	return text;
 });

@@ -48,10 +48,10 @@ describe('textFormat',function() {
 	});
 	
 	it('should rewrite text with two newlines', function() {
-		expect(textFormat('a \n b \n b')).toEqual('a <br /> b <br /> c');
+		expect(textFormat('a \n b \n c')).toEqual('a <br /> b <br /> c');
 	});
 	
 	it('should rewrite combination of newline and bold text', function() {
-		expect(textFormat('*bold* \\n newline')).toEqual('<b>bold</b> <br /> newline');
+		expect(textFormat('*bold* \n newline')).toEqual('<b>bold</b> <br /> newline');
 	});
 });

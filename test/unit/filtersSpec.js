@@ -31,3 +31,19 @@ describe('userInfo', function() {
     expect(userInfo(null)).toEqual('');
   });
 });
+
+describe('textFormat',function(){
+	var textFormat = angular.filter.textFormat;
+	
+	it('should rewrite *text* to <b>text</b>', function(){
+		expect(textFormat('*text*')).toEqual('<b>text</b>');
+	});
+	
+	it('should rewrite text \n newline to text <br /> newline', function(){
+		expect(textFormat('text \\n newline')).toEqual('text <br /> newline');
+	});
+	
+	it('should rewrite *bold text* \n newline to <b>bold text</b> <br /> newline', function(){
+		expect(textFormat('*bold text* \\n newline')).toEqual('<b>bold text</b> <br /> newline');
+	});
+});

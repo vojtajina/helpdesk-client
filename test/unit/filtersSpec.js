@@ -32,7 +32,7 @@ describe('userInfo', function() {
   });
 });
 
-describe('textFormat',function() {
+describe('textFormat', function() {
 	var textFormat = angular.filter.textFormat;
 	
 	it('should rewrite text with multiple bolds', function() {

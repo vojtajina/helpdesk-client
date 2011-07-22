@@ -14,7 +14,7 @@
       <span class="ticket-state" ng:class="ticket.state.toLowerCase()">{{ticket.state}}</span>
       <span class="ticket-number">#{{ticket.number}}</span> by <span class="ticket-author">{{ticket.Author|userInfo}}</span> at <span class="ticket-created">{{ticket.created | gmtdate: 'd.M.yyyy HH:mm:ss'}}</span><br />
 
-      <p class="ticket-description">{{ticket.description}}</p>
+      <p class="ticket-description">{{ticket.description | textFormat | html}}</p>
 
       <!-- revisions -->
       <div ng:show="revLoaded">

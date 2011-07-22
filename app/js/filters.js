@@ -31,3 +31,16 @@ angular.filter('userInfo', function(user) {
 
   return '';
 });
+
+/**
+ * Simple text formatter
+ * Supporting this syntax:
+ *  - * something bold * -> <b>something bold</b>
+ *  - first \n second line -> first <br /> second line
+ *
+ * @param {string} text Text that should be formatted
+ * @returns {string} text Formatted string
+ */
+angular.filter('textFormat', function(text) {
+	return text.replace(/\n/mg, '<br />').replace(/\*([^\*]*)\*/g, '<b>\$1</b>');
+});

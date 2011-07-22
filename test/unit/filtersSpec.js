@@ -32,18 +32,26 @@ describe('userInfo', function() {
   });
 });
 
-describe('textFormat',function(){
+describe('textFormat',function() {
 	var textFormat = angular.filter.textFormat;
 	
-	it('should rewrite *text* to <b>text</b>', function(){
+	it('should rewrite text with multiple bolds', function() {
+		expect(textFormat('a *b* c *d e*')).toEqual('a <b>b</b> c <b>d e</b>');
+	});
+	
+	it('should rewrite text with one bold', function() {
 		expect(textFormat('*text*')).toEqual('<b>text</b>');
 	});
 	
-	it('should rewrite text \n newline to text <br /> newline', function(){
-		expect(textFormat('text \\n newline')).toEqual('text <br /> newline');
+	it('should rewrite text with single newline', function() {
+		expect(textFormat('text \n newline')).toEqual('text <br /> newline');
 	});
 	
-	it('should rewrite *bold text* \n newline to <b>bold text</b> <br /> newline', function(){
-		expect(textFormat('*bold text* \\n newline')).toEqual('<b>bold text</b> <br /> newline');
+	it('should rewrite text with two newlines', function() {
+		expect(textFormat('a \n b \n b')).toEqual('a <br /> b <br /> c');
+	});
+	
+	it('should rewrite combination of newline and bold text', function() {
+		expect(textFormat('*bold* \\n newline')).toEqual('<b>bold</b> <br /> newline');
 	});
 });

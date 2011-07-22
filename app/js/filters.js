@@ -40,10 +40,10 @@ angular.filter('userInfo', function(user) {
  * @param {string} text text that should be formatted
  * @returns {string} text formatted string
  */
-angular.filter('textFormat', function(text){
-	text = text.replace(/\\n/,"<br />");
-	text = text.replace(/\*(.*?)\*/, function(a,b){
-		return "<b>" + b + "</b>";
+angular.filter('textFormat', function(text) {
+	text = text.replace(/\\n/,'<br />');
+	text = text.replace(/\*(.*?)\*/, function(a,b) {
+		return '<b>' + b + '</b>';
 	});
 	
 	return text;

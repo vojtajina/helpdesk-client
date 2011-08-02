@@ -14,7 +14,7 @@
     <li ng:repeat="project in projects.items">
       <h3>{{project.name}}</h3>
       <p>{{project.description | textFormat | html}}</p>
-      <a href ng:click="projects.destroy(project)" class="right">delete</a>
+      <a href ng:click="deleteProject(project)" class="right">delete</a>
       <div class="wrapper"></div>
     </li>
   </ul>

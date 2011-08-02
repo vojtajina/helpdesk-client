@@ -52,6 +52,33 @@ a:hover {
   color: #CCC;
 }
 
+#fixed-toolbar {
+  position: fixed;
+  top: 4px;
+  width: 100%;
+}
+
+.app-status {
+  margin: 0 auto;
+  width: 300px;
+  height: 17px;
+  padding: 2px 6px;
+  font-weight: bold;
+  font-size: 15px;
+  color: black;
+  text-align: center;
+
+  background: #c6cf43;
+  background: -moz-linear-gradient(top, #d1d14b, #bdb638);
+  background: -o-linear-gradient(top, #d1d14b, #bdb638);
+  background: -webkit-gradient(linear, left top, left bottom, from(#d1d14b), to(#bdb638));
+  border: 1px solid #b09927;
+
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+}
+
 #header {
   height: 60px;
   background-color: #F1F1F1;

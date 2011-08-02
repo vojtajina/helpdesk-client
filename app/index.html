@@ -6,6 +6,10 @@
   <link rel="stylesheet" href="css/app.css"/>
 </head>
 <body>
+
+  <!-- Transparent toolbar with fixed position - application status -->
+  <div id="fixed-toolbar" ng:show="$status.message" style="display: none;"><div class="app-status">{{$status.message}}</div></div>
+
   <!-- Google Toolbar -->
   <div id="g-toolbar">
     <span class="right" ng:show="$auth.User">{{$auth.User | userInfo}} | <a ng:href="{{$auth.signout}}">sign out</a></span>

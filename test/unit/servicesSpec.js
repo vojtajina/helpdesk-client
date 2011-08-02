@@ -1,3 +1,43 @@
+describe('$status', function() {
+  var $status, scope;
+
+  beforeEach(function() {
+    scope = createScopeWithMockAuth();
+    $status = scope.$service('$status');
+  });
+
+  it('should set the status message', function() {
+    $status.set('SOMETHING');
+    expect($status.message).toBe('SOMETHING');
+  });
+
+  it('should clear the message when all requests finished', function() {
+    var $browser = scope.$service('$browser');
+    var $xhr = scope.$service('$xhr');
+
+    $browser.xhr.expectGET('/url').respond('');
+    $status.loading();
+    $xhr('GET', '/url');
+    $browser.defer.flush();
+
+    expect($status.message).toBe('L o a d i n g . . .');
+    $browser.xhr.flush();
+    expect($status.message).toBe('');
+  });
+
+  it('should have loading method', function() {
+    expect(angular.isFunction($status.loading)).toBe(true);
+  });
+
+  it('should have deleting method', function() {
+    expect(angular.isFunction($status.deleting)).toBe(true);
+  });
+
+  it('should have saving method', function() {
+    expect(angular.isFunction($status.saving)).toBe(true);
+  });
+});
+
 describe('$api', function() {
   var API = {tickets: '/tickets', users: '/users'},
       $api, xhr, callback;

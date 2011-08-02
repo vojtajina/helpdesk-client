@@ -5,6 +5,40 @@ var SERVICE_URL = 'api',
     SERVICE_AUTH = 'authorization';
 
 /**
+ * Displays status for a running background request
+ */
+angular.service('$status', function($browser, $updateView) {
+  var $status = {
+    message: '',
+    loading: setMessageTo('L o a d i n g . . .'),
+    deleting: setMessageTo('D e l e t i n g . . .'),
+    saving: setMessageTo('S a v i n g . . .'),
+    set: function(message) {
+      this.message = message;
+      registerClearMsgCallback();
+    }
+  };
+
+  return $status;
+
+  function setMessageTo(message) {
+    return function() {
+      this.set(message);
+    };
+  }
+
+  // TODO(vojta): don't register callback when already registered
+  function registerClearMsgCallback() {
+    $browser.defer(function() {
+      $browser.notifyWhenNoOutstandingRequests(function() {
+        $status.message = '';
+        $updateView();
+      });
+    });
+  }
+}, {$inject: ['$browser', '$updateView']});
+
+/**
  * API service [async]
  * Loads API from the REST service
  * Do simple caching as well

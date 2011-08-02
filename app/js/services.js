@@ -1,8 +1,8 @@
 /**
  * Entry points of REST service
  */
-var SERVICE_URL = '/api/v1',
-    SERVICE_AUTH = '/_ah/authorization/';
+var SERVICE_URL = 'api',
+    SERVICE_AUTH = 'authorization';
 
 /**
  * API service [async]

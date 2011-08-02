@@ -9,7 +9,10 @@
   <!-- Google Toolbar -->
   <div id="g-toolbar">
     <span class="right" ng:show="$auth.User">{{$auth.User | userInfo}} | <a ng:href="{{$auth.signout}}">sign out</a></span>
-    <span>Google Toolbar</span>
+    <span class="left">Google Toolbar</span>
+    <span class="inner">
+    	<span class="status" ng:show="$status.message">{{$status.message}}</span>
+    </span>
   </div>
 
   <!-- Gray Header with page title -->

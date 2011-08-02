@@ -32,6 +32,10 @@ a:hover {
   float: right;
 }
 
+.left {
+	float: left;
+}
+
 .wrapper {
   width: 100%;
   clear: both;
@@ -50,6 +54,33 @@ a:hover {
 
 #g-toolbar a {
   color: #CCC;
+}
+
+#g-toolbar .inner {
+  display: block;
+  padding-right: 250px; 
+  text-align: center; 
+  height: 100%;
+}
+
+#g-toolbar .status {
+  display: inline-block;
+  width: 200px;
+  padding: 2px 6px;
+  font-weight: bold;
+  font-size: 12px;
+  margin-left: 2em;
+  color: black;
+	
+  background: #c6cf43;
+  background: -moz-linear-gradient(top, #d1d14b, #bdb638);
+  background: -o-linear-gradient(top, #d1d14b, #bdb638);
+  background: -webkit-gradient(linear, left top, left bottom, from(#d1d14b), to(#bdb638));
+  border: 1px solid #b09927;
+    
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
 }
 
 #header {

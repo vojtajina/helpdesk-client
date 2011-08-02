@@ -68,7 +68,9 @@ describe('TicketsCtrl', function() {
     xhr.expectGET('/url-auth2').respond(author2);
     xhr.expectGET('/url-rev1').respond({items: revisions1});
 
+    scope = scope.$new(MainCtrl);
     ctrl = scope.$new(TicketsCtrl);
+    
     xhr.flush();
   });
 
@@ -145,6 +147,7 @@ describe('ProjectsCtrl', function() {
     xhr.expectGET('/prj1').respond(project1);
     xhr.expectGET('/prj2').respond(project2);
 
+    scope = scope.$new(MainCtrl);
     ctrl = scope.$new(ProjectsCtrl);
     xhr.flush();
   });

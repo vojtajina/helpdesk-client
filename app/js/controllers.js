@@ -5,10 +5,13 @@
  *
  * @param {object} $auth AUTH service
  */
-function MainCtrl($route, $auth, $location) {
+function MainCtrl($route, $auth, $location, $status) {
   var scope = this;
   scope.$auth = $auth;
   scope.showForm = true;
+  scope.$status = $status;
+  
+  $status.loading();
 
   $route.parent(scope);
   $route.when('!/intro',    {controller: IntroCtrl, template: 'partials/intro.html', title: 'Intro'});
@@ -17,6 +20,7 @@ function MainCtrl($route, $auth, $location) {
   $route.otherwise({redirectTo: '!/intro'});
 
   $route.onChange(function(a, b) {
+  	$status.loading();
     scope.title = $route.current.title;
   });
 
@@ -42,7 +46,7 @@ MainCtrl.prototype = {
   }
 };
 
-MainCtrl.$inject = ['$route', '$auth', '$location'];
+MainCtrl.$inject = ['$route', '$auth', '$location', '$status'];
 
 /**
  * TicketsCtrl
@@ -75,9 +79,20 @@ function TicketsCtrl($auth, $api, $resource) {
 
 TicketsCtrl.prototype = {
   createTicket: function() {
+	  this.$status.saving();
     this.newTicket.author = this.$auth.user;
     this.tickets.create(this.newTicket);
     this.resetNewTicket();
+  },
+  
+  deleteTicket: function(ticket) {
+  	this.$status.deleting();
+  	this.tickets.destroy(ticket);
+  },
+  
+  loadDetails: function(ticket) {
+  	this.$status.loading();
+  	ticket.Revisions.loadDetails();
   },
 
   resetNewTicket: function() {
@@ -88,6 +103,8 @@ TicketsCtrl.prototype = {
   },
 
   createRevision: function(revision, ticket) {
+  	this.$status.saving();
+  	
     revision.author = this.$auth.user;
     revision.ticket = ticket.url;
 
@@ -128,8 +145,14 @@ function ProjectsCtrl($api, $resource) {
 
 ProjectsCtrl.prototype = {
   createProject: function() {
+  	this.$status.saving();
     this.projects.create(this.newProject);
     this.resetNewProject();
+  },
+  
+  deleteProject: function(project) {
+  	this.$status.deleting();
+  	this.projects.destroy(project);
   },
 
   resetNewProject: function() {

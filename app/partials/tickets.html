@@ -36,8 +36,8 @@
       <!-- ticket actions -->
       <div class="ticket-actions">
         <a href ng:click="showNewRevForm = !showNewRevForm">add revision</a> | 
-        <span ng:show="!revLoaded"><a href ng:click="ticket.Revisions.loadDetails(); revLoaded = true;">load revisions</a> ({{ticket.Revisions.countTotal()}}) | </span>
-        <a href ng:click="tickets.destroy(ticket)">delete ticket</a>
+        <span ng:show="!revLoaded"><a href ng:click="loadDetails(ticket); revLoaded = true;">load revisions</a> ({{ticket.Revisions.countTotal()}}) | </span>
+        <a href ng:click="deleteTicket(ticket)">delete ticket</a>
       </div>
       <div class="wrapper"></div>
     </li>

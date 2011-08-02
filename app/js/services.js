@@ -1,8 +1,42 @@
 /**
  * Entry points of REST service
  */
-var SERVICE_URL = '/api/v1',
-    SERVICE_AUTH = '/_ah/authorization/';
+var SERVICE_URL = 'api',
+    SERVICE_AUTH = 'authorization';
+
+/**
+ * Displays status for a running background request
+ */
+angular.service('$status', function($browser, $updateView) {
+  var $status = {
+    message: '',
+    loading: setMessageTo('Loading...'),
+    deleting: setMessageTo('Deleting...'),
+    saving: setMessageTo('Saving...'),
+    set: function(message) {
+      this.message = message;
+      registerClearMsgCallback();
+    }
+  };
+
+  return $status;
+
+  function setMessageTo(message) {
+    return function() {
+      this.set(message);
+    };
+  }
+
+  // TODO(vojta): don't register callback when already registered
+  function registerClearMsgCallback() {
+    $browser.defer(function() {
+      $browser.notifyWhenNoOutstandingRequests(function() {
+        $status.message = '';
+        $updateView();
+      });
+    });
+  }
+}, {$inject: ['$browser', '$updateView']});
 
 /**
  * API service [async]

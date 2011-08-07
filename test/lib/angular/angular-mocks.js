@@ -84,7 +84,8 @@ angular.mock = {};
 function MockBrowser() {
   var self = this,
       expectations = {},
-      requests = [];
+      requests = [],
+      outstandingRequestsCallbacks = [];
 
   this.isMock = true;
   self.url = "http://server";
@@ -155,6 +156,10 @@ function MockBrowser() {
     while(requests.length) {
       requests.pop()();
     }
+
+    while (outstandingRequestsCallbacks.length) {
+      outstandingRequestsCallbacks.pop()();
+    }
   };
 
   self.cookieHash = {};
@@ -173,6 +178,14 @@ function MockBrowser() {
     self.defer.now += (time || 0);
     while (self.deferredFns.length && self.deferredFns[0].time <= self.defer.now) {
       self.deferredFns.shift().fn();
+    }
+  };
+
+  self.notifyWhenNoOutstandingRequests = function(callback) {
+    if (requests.length) {
+      outstandingRequestsCallbacks.push(callback);
+    } else {
+      callback();
     }
   };
 }

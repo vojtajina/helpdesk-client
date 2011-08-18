@@ -43,11 +43,13 @@ cp "$APP_DIR/css/app.css" "$BUILD_DIR/helpdesk.css"
 cp "$APP_DIR/index.html" $BUILD_DIR
 cp "$APP_DIR/lib/angular/angular.min.js" $BUILD_DIR
 cp -r "$APP_DIR/partials" "$BUILD_DIR/"
+cp "$APP_DIR/favicon.ico" "$BUILD_DIR/"
 
 # change the index.html
 sed -Ei "s|css/app.css|$ASSET_PREFIX/helpdesk.css|" "$BUILD_DIR/index.html"
 sed -Ei "s|lib/angular/angular.js|$ASSET_PREFIX/angular.min.js|" "$BUILD_DIR/index.html"
 sed -Ei "s|js/utils.js|$ASSET_PREFIX/helpdesk.min.js|" "$BUILD_DIR/index.html"
+sed -Ei "s|favicon.ico|$ASSET_PREFIX/favicon.ico|" "$BUILD_DIR/index.html"
 sed -Ei "/script src=\"js/d" "$BUILD_DIR/index.html"
 
 sed -Ei "s|DOMAIN_NAME|$DOMAIN_NAME|" "$BUILD_DIR/index.html"

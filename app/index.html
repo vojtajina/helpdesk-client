@@ -8,11 +8,11 @@
 <body>
 
   <!-- Transparent toolbar with fixed position - application status -->
-  <div id="fixed-toolbar" ng:show="$status.message" style="display: none;"><div class="app-status">{{$status.message}}</div></div>
+  <div id="fixed-toolbar" ng:show="$status.message"><div class="app-status" ng:bind="$status.message">L o a d i n g . . .</div></div>
 
   <!-- Google Toolbar -->
   <div id="g-toolbar">
-    <span class="right" ng:show="$auth.User">{{$auth.User | userInfo}} | <a ng:href="{{$auth.signout}}">sign out</a></span>
+    <span class="right" ng:show="$auth.User" style="display: none;">{{$auth.User | userInfo}} | <a ng:href="{{$auth.signout}}">sign out</a></span>
     <span>Google Toolbar</span>
   </div>
 

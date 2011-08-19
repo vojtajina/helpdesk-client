@@ -182,6 +182,9 @@ ResourceCollection.prototype = {
    */
   create: function(resource, done) {
     var self = this;
+    if(!resource.description) {
+    	return;
+    }
     this.$xhr('POST', this.url, resource, function(code, resourceFromServer, headers) {
       var url = pathFromUrl(headers('Location')),
           i = self.items_.push(url) - 1;

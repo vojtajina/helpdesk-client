@@ -52,8 +52,8 @@ sed -Ei "s|js/utils.js|$ASSET_PREFIX/helpdesk.min.js|" "$BUILD_DIR/index.html"
 sed -Ei "s|favicon.ico|$ASSET_PREFIX/favicon.ico|" "$BUILD_DIR/index.html"
 sed -Ei "/script src=\"js/d" "$BUILD_DIR/index.html"
 
-sed -Ei "s|DOMAIN_NAME|$DOMAIN_NAME|" "$BUILD_DIR/index.html"
-sed -Ei "s|DOMAIN_URL|$DOMAIN_URL|" "$BUILD_DIR/index.html"
+sed -Ei "s|DOMAIN_NAME|$DOMAIN_NAME|g" "$BUILD_DIR/index.html"
+sed -Ei "s|DOMAIN_URL|$DOMAIN_URL|g" "$BUILD_DIR/index.html"
 
 # create archive
 tar -zcvf helpdesk-client.tar.gz "$BUILD_DIR"

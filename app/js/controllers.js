@@ -59,10 +59,10 @@ MainCtrl.$inject = ['$route', '$auth', '$location', '$status'];
 function TicketsCtrl($auth, $api, $resource) {
   var self = this;
 
-  this.STATES = 'new,assigned,pending,resolved,explain,closed'.toUpperCase().split(',');
+  this.STATES = 'NEW ASSIGNED PENDING RESOLVED EXPLAIN CLOSED'.split(' ');
 
   $api('tickets', function(ticketsUrl) {
- // TODO(vojta): remove temporary hack when implemented on service
+    // TODO(vojta): remove temporary hack when implemented on service
     // Content-Type should be application/vnd.helpdesk.ticket+json
     self.tickets = $resource(ticketsUrl, 'application/json', {
       author: ResourceCollection.RELATION.ONE,

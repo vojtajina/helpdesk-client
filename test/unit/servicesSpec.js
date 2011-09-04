@@ -299,6 +299,30 @@ describe('$resource', function() {
       expect(rc.items[0].id).toEqual('new-id');
       expect(rc.items[0].isNew).toBe(true);
     });
+
+    it('should reload relations if changed', function() {
+
+      var res = {id: 'res1', url: '/url1', rel1: '/url/rel1', rel2: '/url/rel2'};
+
+      expectItems([res.url]);
+      xhr.expectGET(res.url).respond(res);
+      xhr.expectGET(res.rel1).respond({id: 'old-rel1'});
+      xhr.expectGET(res.rel2).respond({id: 'old-rel2'});
+
+      var rc = scope.$service('$resource')('/url', '', {
+        rel1: ResourceCollection.RELATION.ONE,
+        rel2: ResourceCollection.RELATION.ONE
+      });
+      xhr.flush();
+
+      xhr.expectGET(res.url).respond({rel1: '/url/rel1', rel2: '/new-url'});
+      xhr.expectGET('/new-url').respond({id: 'new-rel2'});
+      rc.reload(res.url);
+      xhr.flush();
+
+      expect(rc.items[0].Rel1.id).toBe('old-rel1');
+      expect(rc.items[0].Rel2.id).toBe('new-rel2');
+    });
   });
 });
 

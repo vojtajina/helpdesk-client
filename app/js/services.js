@@ -215,10 +215,26 @@ ResourceCollection.prototype = {
   reload: function(url) {
     var self = this;
     this.$xhr('GET', url, function(code, response, headers) {
-      // TODO(vojta): relations ?
-      // add param to say whether we want to reload relations as well
-      // by default reload only if change ???
-      angular.extend(self.items[self.getResourceIdxFromUrl(url)], response);
+      // TODO(vojta): 1-N relations ?
+      // add param to say whether we want to reload relations as well ?
+
+      var index = self.getResourceIdxFromUrl(url),
+          oldResource = angular.copy(self.items[index]),
+          newResource = angular.extend(self.items[index], response);
+
+      // reload 1-1 relations that has changed
+      angular.forEach(self.relations_, function(type, name) {
+        if (type == ResourceCollection.RELATION.ONE && newResource[name] != oldResource[name]) {
+          if (!newResource[name]) {
+            newResource[ucfirst(name)] = null;
+          } else {
+            self.$xhr('GET', newResource[name], function(code, relation) {
+              relation.url = newResource[name];
+              newResource[ucfirst(name)] = relation;
+            });
+          }
+        }
+      });
     });
   },
 

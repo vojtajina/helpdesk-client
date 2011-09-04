@@ -66,11 +66,18 @@ function TicketsCtrl($auth, $api, $resource) {
     // Content-Type should be application/vnd.helpdesk.ticket+json
     self.tickets = $resource(ticketsUrl, 'application/json', {
       author: ResourceCollection.RELATION.ONE,
+      assignee: ResourceCollection.RELATION.ONE,
       revisions: ResourceCollection.RELATION.MANY});
   });
 
   $api('ticket-revisions', function(revisionsUrl) {
     self.revUrl = revisionsUrl;
+  });
+
+  // TODO(vojta): remove temporary hack when implemented on service
+  // Content-Type should be application/vnd.helpdesk.user+json
+  $api('users', function(usersUrl) {
+    self.users = $resource(usersUrl, 'application/json', {});
   });
 
   this.$auth = $auth;
@@ -102,6 +109,7 @@ TicketsCtrl.prototype = {
     };
   },
 
+  // TODO(vojta): move this method into RevisionFormCtrl
   createRevision: function(revision, ticket) {
     this.$status.saving();
 
@@ -118,10 +126,18 @@ TicketsCtrl.prototype = {
 
     // reset
     revision.comment = '';
+    revision.state = null;
+    revision.assignee = null;
   }
 };
 
 TicketsCtrl.$inject = ['$auth', '$api', '$resource'];
+
+function RevisionFormCtrl() {
+  // TODO(vojta): set state and assignee to current value
+  // when angular updated to support fixed ng:options
+  this.newRev = {};
+}
 
 /**
  * ProjectsCtrl

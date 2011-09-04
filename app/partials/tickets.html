@@ -12,7 +12,11 @@
   <ul class="ticket list">
     <li ng:repeat="ticket in tickets.items" ng:class="ticket.state.toLowerCase()">
       <span class="ticket-state" ng:class="ticket.state.toLowerCase()">{{ticket.state}}</span>
-      <span class="ticket-number">#{{ticket.number}}</span> by <span class="ticket-author">{{ticket.Author|userInfo}}</span> at <span class="ticket-created">{{ticket.created | gmtdate: 'd.M.yyyy HH:mm:ss'}}</span><br />
+      <span class="ticket-number">#{{ticket.number}}</span> 
+      by <span class="ticket-author">{{ticket.Author|userInfo}}</span> 
+      at <span class="ticket-created">{{ticket.created | gmtdate: 'd.M.yyyy HH:mm:ss'}}</span>
+      <span ng:show="ticket.Assignee">assigned to <span class="ticket-assignee">{{ticket.Assignee|userInfo}}</span></span>
+      <span ng:show="!ticket.Assignee">not assigned</span><br />
 
       <p class="ticket-description">{{ticket.description | textFormat | html}}</p>
 
@@ -27,15 +31,28 @@
       </div>
 
       <!-- new revision -->
-      <div class="ticket-revision new-form" ng:show="showNewRevForm" ng:init="newRev = {state: ticket.state}">
-        <label for="new-rev-comment">Comment:</label> <input type="text" name="newRev.comment" id="new-rev-comment" /> 
-        <select name="newRev.state"><option ng:repeat="state in STATES" value="{{state}}">{{state}}</option></select>
-        <button ng:click="createRevision(newRev, ticket)">ADD</button>
+      <div class="ticket-revision new-form" ng:show="showNewRevForm" ng:controller="RevisionFormCtrl">
+        <label for="new-rev-assignee">Assign to:</label>
+        <select name="newRev.assignee" id="new-rev-assignee">
+          <option value="">--</option>
+          <option ng:repeat="user in users.items" value="{{user.url}}">{{user|userInfo}}</option>
+        </select>
+
+        <label for="new-rev-state">Change state to:</label>
+        <select name="newRev.state" id="new-rev-state">
+          <option value="">--</option>
+          <option ng:repeat="state in STATES" value="{{state}}">{{state}}</option>
+        </select><br />
+
+        <label for="new-rev-comment">Comment:</label>
+        <input type="text" name="newRev.comment" id="new-rev-comment" />
+
+        <button ng:click="createRevision(newRev, ticket)">ADD REVISION</button>
       </div>
-            
+
       <!-- ticket actions -->
       <div class="ticket-actions">
-        <a href ng:click="showNewRevForm = !showNewRevForm">add revision</a> | 
+        <a href ng:click="showNewRevForm = !showNewRevForm">new revision</a> | 
         <span ng:show="!revLoaded"><a href ng:click="loadDetails(ticket); revLoaded = true;">load revisions</a> ({{ticket.Revisions.countTotal()}}) | </span>
         <a href ng:click="deleteTicket(ticket)">delete ticket</a>
       </div>

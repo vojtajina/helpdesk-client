@@ -60,8 +60,9 @@ describe('TicketsCtrl', function() {
     revisions1 = ['/rev1', '/rev2'];
 
     var xhr = scope.$service('$browser').xhr;
-    xhr.expectGET(SERVICE_URL).respond({tickets: '/ticket-url'});
+    xhr.expectGET(SERVICE_URL).respond({tickets: '/ticket-url', users: '/users'});
     xhr.expectGET('/ticket-url').respond({items: ['/url1', '/url2']});
+    xhr.expectGET('/users').respond({items: []});
     xhr.expectGET('/url1').respond(ticket1);
     xhr.expectGET('/url2').respond(ticket2);
     xhr.expectGET('/url-auth1').respond(author1);

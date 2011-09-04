@@ -151,7 +151,7 @@ a:hover {
 
 /* TICKETS */
 
-.ticket-number, .ticket-author, .ticket-created {
+.ticket-number, .ticket-author, .ticket-assignee, .ticket-created {
   font-weight: bold;
 }
 
@@ -187,11 +187,15 @@ a:hover {
 }
 
 .ticket-revision.new-form input {
-  width: 452px; 
+  width: 518px; 
 }
 
-.ticket-revision.new-form button, .ticket-revision.new-form select {
-  width: 100px;
+.ticket-revision.new-form button {
+  width: 140px;
+}
+
+.ticket-revision.new-form select {
+  width: 200px; 
 }
 
 .ticket-actions {

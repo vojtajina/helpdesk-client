@@ -15,7 +15,7 @@ function MainCtrl($route, $auth, $location, $status) {
 
   $route.parent(scope);
   $route.when('!/intro',    {controller: IntroCtrl, template: 'partials/intro.html', title: 'Intro'});
-  $route.when('!/tickets',  {controller: TicketsCtrl, template: 'partials/tickets.html', title: 'Tickets'});
+  $route.when('!/tickets/:group', {controller: TicketsCtrl, template: 'partials/tickets.html', title: 'Tickets'});
   $route.when('!/projects', {controller: ProjectsCtrl, template: 'partials/projects.html', title: 'Projects'});
   $route.otherwise({redirectTo: '!/intro'});
 
@@ -56,12 +56,15 @@ MainCtrl.$inject = ['$route', '$auth', '$location', '$status'];
  * @param {Object} $api API service
  * @param {Object} $resource RESOURCE service
  */
-function TicketsCtrl($auth, $api, $resource) {
+function TicketsCtrl($auth, $api, $resource, $route) {
   var self = this;
 
   this.STATES = 'NEW ASSIGNED PENDING RESOLVED EXPLAIN CLOSED'.split(' ');
 
-  $api('tickets', function(ticketsUrl) {
+  // TODO(vojta): support more ticket groups when implemented on server
+  var ticketsGroup = $route.current && $route.current.params.group == 'active'
+                   ? 'active-tickets' : 'tickets';
+  $api(ticketsGroup, function(ticketsUrl) {
     // TODO(vojta): remove temporary hack when implemented on service
     // Content-Type should be application/vnd.helpdesk.ticket+json
     self.tickets = $resource(ticketsUrl, 'application/json', {
@@ -131,7 +134,7 @@ TicketsCtrl.prototype = {
   }
 };
 
-TicketsCtrl.$inject = ['$auth', '$api', '$resource'];
+TicketsCtrl.$inject = ['$auth', '$api', '$resource', '$route'];
 
 function RevisionFormCtrl() {
   // TODO(vojta): set state and assignee to current value

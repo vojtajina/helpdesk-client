@@ -1,3 +1,9 @@
+var API = {
+  tickets: '/all-tickets',
+  'active-tickets': '/active-tickets',
+  users: '/users'
+};
+
 describe('MainCtrl', function() {
   var $auth, ctrl, scope;
 
@@ -60,9 +66,9 @@ describe('TicketsCtrl', function() {
     revisions1 = ['/rev1', '/rev2'];
 
     var xhr = scope.$service('$browser').xhr;
-    xhr.expectGET(SERVICE_URL).respond({tickets: '/ticket-url', users: '/users'});
-    xhr.expectGET('/ticket-url').respond({items: ['/url1', '/url2']});
-    xhr.expectGET('/users').respond({items: []});
+    xhr.expectGET(SERVICE_URL).respond(API);
+    xhr.expectGET(API.tickets).respond({items: ['/url1', '/url2']});
+    xhr.expectGET(API.users).respond({items: []});
     xhr.expectGET('/url1').respond(ticket1);
     xhr.expectGET('/url2').respond(ticket2);
     xhr.expectGET('/url-auth1').respond(author1);
@@ -114,6 +120,21 @@ describe('TicketsCtrl', function() {
     expect(ticket.Revisions instanceof ResourceCollection).toBe(true);
     expect(ticket.Revisions.countTotal()).toBe(2);
     expect(ticket.Revisions.items.length).toBe(0);
+  });
+
+  it('should load active tickets', function() {
+    scope = createScopeWithMockAuth();
+
+    var xhr = scope.$service('$browser').xhr;
+    scope.$service('$location').updateHash('/tickets/all');
+
+    xhr.expectGET(SERVICE_URL).respond(API);
+    xhr.expectGET(API['active-tickets']).respond({items: []});
+    xhr.expectGET(API.users).respond({items: []});
+
+    ctrl = scope.$new(MainCtrl).$new(TicketsCtrl);
+    xhr.flush();
+    console.log(scope.$service('$log').error.logs);
   });
 
   describe('createRevision', function() {

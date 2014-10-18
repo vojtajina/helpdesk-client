@@ -166,7 +166,7 @@ describe('$resource', function() {
       var rc = scope.$service('$resource')('/url', 'application/vnd.helpdesk.ticket+json');
       xhr.flush();
 
-      var resourceNew = {id: 'new'};
+      var resourceNew = {id: 'new', description: 'text'};
       var resourceFromServer = {id: 'from-server'};
 
       xhr.expectPOST('/url', resourceNew, {'Content-Type': 'application/vnd.helpdesk.ticket+json'}).respond(resourceFromServer);
@@ -179,6 +179,21 @@ describe('$resource', function() {
       expect(rc.items.pop().id).toEqual('from-server');
       expect(rc.loadRelations).toHaveBeenCalled();
     });
+    
+    it('should not send POST request when content is empty', function() {
+    	expectItems(['/first']);
+      xhr.expectGET('/first').respond({id: '1'});
+      
+    	var rc = scope.$service('$resource')('/url', 'application/vnd.helpdesk.ticket+json');
+    	xhr.flush();
+    	
+    	var resourceNew = {id: 'new'};
+    	var resourceFromServer = {id: 'from-server'};
+    	xhr.expectPOST('/url', resourceNew, {'Content-Type': 'application/vnd.helpdesk.ticket+json'}).respond(resourceFromServer);
+    	rc.create(resourceNew);
+    	
+    	expect(rc.countTotal()).toBe(1);
+    });
 
     it('should set url property to resource from server', function() {
       expectItems(['/first']);
@@ -187,7 +202,7 @@ describe('$resource', function() {
       var rc = scope.$service('$resource')('/url', 'application/vnd.helpdesk.ticket+json');
       xhr.flush();
 
-      var resourceNew = {id: 'new'};
+      var resourceNew = {id: 'new', description: 'text'};
       var resourceFromServer = {id: 'from-server'};
 
       xhr.expectPOST('/url', resourceNew, {'Content-Type': 'application/vnd.helpdesk.ticket+json'}).respond(resourceFromServer);
@@ -206,7 +221,7 @@ describe('$resource', function() {
       expectItems([]);
 
       var rc = scope.$service('$resource')('/url'),
-          resourceNew = {id: 'new'},
+          resourceNew = {id: 'new', description: 'text'},
           callback = jasmine.createSpy('done');
 
       xhr.flush();
